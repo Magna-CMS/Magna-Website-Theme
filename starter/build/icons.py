@@ -1,4 +1,4 @@
-"""Signature -> sprite icon name map for the Nova theme.
+"""Signature -> sprite icon name map for the Kizmath theme.
 
 Keys are the normalised inner markup of the source SVGs (attributes sorted by
 BeautifulSoup's own serialisation), values are the sprite symbol names the

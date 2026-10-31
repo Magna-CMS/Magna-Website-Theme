@@ -2,9 +2,17 @@
 
 Every page becomes a real block document: registered block handles, real
 fields, no raw-HTML blocks. Design intent that the block vocabulary cannot
-carry as data rides on section CSS classes the Nova theme defines
-(nova-why, nova-cards, nova-rows, ...), which is exactly the seam the page
-builder exposes as a section's "CSS class" field.
+carry as data rides on section CSS classes the Kizmath theme styles (hero,
+why, arch, headless, cases, plugins, builder, audiences, faq, cta, plus the
+row and modifier classes), which is exactly the seam the page builder
+exposes as a section's "CSS class" field.
+
+Node ids are deterministic and scoped per document (kiz-<doc>-<kind>-NNNN),
+so a re-generated kit updates the same nodes instead of orphaning them, and
+`magna:site:sync` stays an upsert rather than a rewrite.
+
+Usage: python convert.py [output.json] [--strict]
+`--strict` fails the run if any source markup went unconverted.
 """
 
 from __future__ import annotations
@@ -20,7 +28,8 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 sys.path.insert(0, str(Path(__file__).parent))
 from icons import name_for  # noqa: E402
 
-SOURCE = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
+SOURCE = ROOT / "source"
 
 # slug, source file, title. The home page keeps slug "home" and is pointed
 # at by the site's home_page_slug setting — a page still needs a slug of
@@ -38,6 +47,7 @@ PAGES = [
     ("plugins", "plugins.html", "Plugins & Extensions"),
     ("about", "about.html", "About"),
     ("compare", "compare.html", "Compare"),
+    ("404", "404.html", "Page not found"),
 ]
 
 # Source page file -> the site path it becomes. Every in-document link is
@@ -54,6 +64,7 @@ LINKS = {
     "plugins.html": "/plugins",
     "about.html": "/about",
     "compare.html": "/compare",
+    "404.html": "/404",
 }
 
 DOC_URL = "https://github.com/Magna-CMS/Magna/"
@@ -76,7 +87,22 @@ BANDS = {
     "cta": "cta",
 }
 
-_ids = {"n": 0}
+_ids = {"doc": "doc", "n": 0}
+
+# Everything a run could not convert faithfully lands here; --strict turns
+# a non-empty report into a failing exit.
+REPORT: list[str] = []
+
+
+def id_scope(doc: str) -> None:
+    """Start a fresh id sequence for one document.
+
+    Ids are scoped per document so that adding a band to one page can never
+    renumber the nodes of another — a kit-global counter would shift every
+    later page's ids and make each re-sync read as a total rewrite there.
+    """
+    _ids["doc"] = doc
+    _ids["n"] = 0
 
 
 def nid(prefix: str) -> str:
@@ -87,7 +113,7 @@ def nid(prefix: str) -> str:
     a page's revision history would show a total rewrite each time.
     """
     _ids["n"] += 1
-    return f"nova-{prefix}-{_ids['n']:04d}"
+    return f"kiz-{_ids['doc']}-{prefix}-{_ids['n']:04d}"
 
 
 # --------------------------------------------------------------------------
@@ -216,7 +242,7 @@ def features(items: list[dict], layout: str = "icon-grid") -> dict:
 
     `items` is a `json` field, so it is stored as a JSON string — that is
     what the core view decodes and what the builder's inspector edits. The
-    Nova view reads two extra optional keys (`status`, `tag`) that the core
+    Kizmath view reads extra optional keys (`status`, `tone`, `tag`) that the core
     view simply ignores.
     """
     return block("features", {
@@ -459,7 +485,7 @@ def convert_hero(sec: Tag) -> dict:
     # text field, because half of it is set in the accent colour with <em>
     # and a plain string cannot carry that. Every piece stays separately
     # editable in the builder, and the markup is theme-portable — a site
-    # that switches away from Nova still gets a headline, a paragraph and
+    # that switches away from Kizmath still gets a headline, a paragraph and
     # two buttons rather than a marker syntax nothing else understands.
     blocks.append(headline(h1, "h1"))
     if txt(sub):
@@ -750,7 +776,12 @@ def split_columns(grid: Tag) -> tuple[list[list[dict]], str]:
 
 def convert_section(sec: Tag) -> list[dict]:
     classes = sec.get("class") or []
-    kind = next((c for c in classes if c in BANDS), "problem")
+    kind = next((c for c in classes if c in BANDS), None)
+    if kind is None:
+        REPORT.append(
+            f"{_ids['doc']}: section with classes {classes!r} matches no band; styled as 'problem'"
+        )
+        kind = "problem"
     band = BANDS[kind]
     anchor = sec.get("id") or ""
 
@@ -820,7 +851,8 @@ def convert_section(sec: Tag) -> list[dict]:
     return sections
 
 
-def convert_page(path: Path) -> list[dict]:
+def convert_page(path: Path) -> tuple[list[dict], str, str]:
+    """A page's sections, plus the <head>'s own title and description."""
     soup = BeautifulSoup(path.read_text(encoding="utf-8"), "lxml")
     sections: list[dict] = []
     for node in soup.body.find_all(["section", "div"], recursive=False):
@@ -828,7 +860,13 @@ def convert_page(path: Path) -> list[dict]:
             sections.extend(convert_section(node))
         elif "trust" in (node.get("class") or []):
             sections.append(convert_trust(node))
-    return sections
+
+    meta_title = txt(soup.head.find("title")) if soup.head else ""
+    description = ""
+    if soup.head:
+        meta = soup.head.find("meta", attrs={"name": "description"})
+        description = (meta.get("content") or "").strip() if meta else ""
+    return sections, meta_title, description
 
 
 # --------------------------------------------------------------------------
@@ -884,7 +922,64 @@ MENUS = [
             menu_item("Compare", "/compare"),
         ],
     },
+    # The drawer's own index: Home plus three groups. It rides inside the
+    # header part's hidden drawer-menu section, where the layout's script
+    # finds it — the layout itself only ever receives the `primary` handle.
+    {
+        "handle": "mobile",
+        "name": "Mobile drawer",
+        "tree": [
+            menu_item("Home", "/home"),
+            menu_item("Product", "", [
+                menu_item("Why Magna", "/why-magna"),
+                menu_item("Features", "/features"),
+                menu_item("Page Builder", "/page-builder"),
+                menu_item("Plugins & Extensions", "/plugins"),
+                menu_item("Use Cases", "/use-cases"),
+            ]),
+            menu_item("Developers", "", [
+                menu_item("Documentation", DOC_URL),
+                menu_item("Developers", "/for-developers"),
+                menu_item("REST API", "/for-developers#api"),
+                menu_item("Build a Plugin", "/for-developers#build-plugin"),
+                menu_item("Agencies", "/agencies"),
+            ]),
+            menu_item("Company", "", [
+                menu_item("About", "/about"),
+                menu_item("Compare", "/compare"),
+            ]),
+        ],
+    },
 ]
+
+
+def header_part() -> dict:
+    """The site header, as a template part.
+
+    Three columns the layout's chrome CSS lays out on one row: the logo,
+    the primary navigation, and the repository button. A second, hidden
+    section carries the `mobile` menu for the layout's drawer script.
+    """
+    return {
+        "status": "published",
+        "title": "Header",
+        "slug": "header",
+        "locale": "",
+        "kind": "part",
+        "blocks_data": {
+            "schemaVersion": "1.0",
+            "sections": [
+                section("header-main", [
+                    [block("logo", {"media_id": None, "text": "magna CMS", "height": "34px",
+                                    "alt": "Magna CMS", "url": "/home", "heading": "no"})],
+                    [block("nav", {"menu": "primary"})],
+                    [block("button", {"label": "View on GitHub", "url": DOC_URL,
+                                      "style": "primary", "size": "sm", "target": "_blank"})],
+                ], spans=[3, 6, 3]),
+                section("drawer-menu", [[block("nav", {"menu": "mobile"})]]),
+            ],
+        },
+    }
 
 
 def footer_part() -> dict:
@@ -896,13 +991,12 @@ def footer_part() -> dict:
     is only the fallback for a site that has not designed one.
     """
     brand = [
-        # The home page's own address, not "/": this install's root belongs
-        # to the admin panel, and a page is addressable by its slug on every
-        # install, so this link is correct either way.
-        block("logo", {"media_id": None, "text": "magna", "height": "40px",
+        # The home page's own address, not "/": a page is addressable by its
+        # slug on every install, so this link is correct either way.
+        block("logo", {"media_id": None, "text": "magna CMS", "height": "40px",
                        "alt": "Magna CMS", "url": "/home", "heading": "no"}),
-        prose("<p>An extensible, developer-grade CMS for the web as it is today. "
-              "Open source, and built to be built on.</p>"),
+        prose("<p>An open-source CMS built on Laravel 13 with a Filament 5 admin. "
+              "Self-hosted, MIT-licensed, and developed in the open.</p>"),
         prose(f'<p><a href="{DOC_URL}">GitHub</a></p>'),
     ]
 
@@ -925,7 +1019,9 @@ def footer_part() -> dict:
                     column("Company", "footer_company"),
                 ], spans=[6, 2, 2, 2]),
                 section("footer-bottom", [[
-                    prose('<p>&copy; 2026 Magna CMS. Open source, released under the MIT licence.</p>'),
+                    # {tag:site.year} is core's CurrentYearTag, so the notice
+                    # never goes stale.
+                    prose('<p>&copy; {tag:site.year} Magna CMS. Open source, released under the MIT licence.</p>'),
                 ]]),
             ],
         },
@@ -933,35 +1029,52 @@ def footer_part() -> dict:
 
 
 def main() -> None:
+    args = [a for a in sys.argv[1:] if a != "--strict"]
+    strict = "--strict" in sys.argv[1:]
+
     pages = []
     for slug, filename, title in PAGES:
-        blocks_data = convert_page(SOURCE / filename)
+        id_scope(slug)
+        sections, meta_title, meta_description = convert_page(SOURCE / filename)
         pages.append({
             "status": "published",
             "title": title,
             "slug": slug,
             "path": slug,
             "locale": "",
-            "blocks_data": {"schemaVersion": "1.0", "sections": blocks_data},
+            "meta_title": meta_title,
+            "meta_description": meta_description,
+            "blocks_data": {"schemaVersion": "1.0", "sections": sections},
         })
+
+    id_scope("header")
+    header = header_part()
+    id_scope("footer")
+    footer = footer_part()
+    id_scope("menus")
 
     kit = {
         "format": "magna-site-kit",
         "version": 1,
         "pages": pages,
-        "templates": [footer_part()],
+        "templates": [header, footer],
         "menus": MENUS,
+        # Only the two slugs. A sync must never touch maintenance mode or
+        # the site's collection mounts — those belong to the install.
         "settings": {
             "home_page_slug": "home",
-            "not_found_page_slug": None,
-            "maintenance_mode": False,
-            "collection_mounts": [],
+            "not_found_page_slug": "404",
         },
     }
 
-    out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("magna-website.json")
-    out.write_text(json.dumps(kit, indent=2, ensure_ascii=False), encoding="utf-8")
+    out = Path(args[0]) if args else ROOT / "starter" / "magna-website.json"
+    out.write_text(json.dumps(kit, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Wrote {out} — {len(pages)} pages, {sum(len(p['blocks_data']['sections']) for p in pages)} sections.")
+
+    for line in REPORT:
+        print(f"  ! {line}")
+    if strict and REPORT:
+        sys.exit(f"{len(REPORT)} conversion warning(s) in --strict mode.")
 
 
 if __name__ == "__main__":
