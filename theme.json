@@ -1,0 +1,16 @@
+{
+    "name": "kizmath/website",
+    "displayName": "Kizmath",
+    "description": "The Magna CMS marketing-site theme: indigo-on-ink hero bands, grid-and-mesh backdrops, terminal mockups and card grids. Every band is real page-builder blocks styled through section classes — no raw HTML, no bespoke templates.",
+    "version": "1.0.0",
+    "author": "Magna CMS",
+    "license": "MIT",
+    "compat": {
+        "magna": "^1.7",
+        "plugins": {
+            "magna-cms/pages": ">=0.7"
+        }
+    },
+    "tags": ["marketing", "product", "developer", "landing", "cms"],
+    "demoContent": ["starter/magna-website.json"]
+}
