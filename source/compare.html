@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magna CMS vs Traditional CMS Platforms — An Honest Comparison</title>
-<meta name="description" content="How Magna's design philosophy differs from traditional and hosted CMS platforms — architecture, extensibility, security and ownership — and which projects each suits.">
-<link rel="icon" type="image/svg+xml" href="/magna-logo.svg">
+<title>Compare — Magna CMS</title>
+<meta name="description" content="How Magna differs from established CMS platforms and hosted headless services: architecture, extensibility, security and ownership, and when it is not the right fit.">
+<link rel="icon" type="image/svg+xml" href="magna-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,31 +67,6 @@
     background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
     z-index: 2000; transition: width 0.1s linear;
   }
-
-  /* ===== CUSTOM CURSOR ===== */
-  .cursor-glow {
-    position: fixed; top: 0; left: 0; width: 380px; height: 380px;
-    border-radius: 50%; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-    transform: translate(-50%,-50%); opacity: 0; transition: opacity 0.4s ease;
-    mix-blend-mode: multiply;
-  }
-
-  /* ===== PRELOADER ===== */
-  .preloader {
-    position: fixed; inset: 0; z-index: 5000; background: var(--bg-dark);
-    display: flex; align-items: center; justify-content: center; flex-direction: column;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  .preloader.done { opacity: 0; visibility: hidden; }
-  .preloader.skip, html.no-splash .preloader { display: none; }
-  .pre-logo { display: flex; align-items: center; gap: 14px; opacity: 0; animation: preIn 0.8s var(--ease) forwards; }
-  .pre-logo .logo-mark { width: 52px; height: 52px; }
-  .pre-logo span { font-family: var(--serif); font-size: 42px; font-weight: 700; color: #fff; letter-spacing: -0.04em; }
-  .pre-bar { width: 180px; height: 2px; background: var(--border-dark); margin-top: 24px; overflow: hidden; border-radius: 2px; }
-  .pre-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,var(--accent-3),var(--accent),var(--accent-2)); animation: preLoad 1.3s ease forwards; }
-  @keyframes preIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(14px); } }
-  @keyframes preLoad { to { width: 100%; } }
 
   /* ===== BUTTONS ===== */
   .btn {
@@ -247,11 +222,6 @@
   .hero-card ul { list-style: none; display: grid; gap: 12px; text-align: left; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 24px; }
   .hero-card ul li { font-size: 14px; color: #d6daec; font-weight: 500; display: flex; align-items: center; gap: 10px; }
   .hero-card ul li svg { width: 16px; height: 16px; color: var(--accent-3); flex-shrink: 0; }
-
-  .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #8b91ad; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; }
-  .scroll-hint .mouse { width: 24px; height: 38px; border: 2px solid rgba(255,255,255,0.3); border-radius: 14px; position: relative; }
-  .scroll-hint .mouse::before { content:""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent-3); border-radius: 2px; animation: scrollWheel 1.6s infinite; }
-  @keyframes scrollWheel { 0%{ opacity:1; top: 7px;} 70%{ opacity:0; top: 18px;} 100%{opacity:0;} }
 
   /* ===== MARQUEE ===== */
   .trust { background: var(--bg-dark); padding: 0 0 60px; overflow: hidden; }
@@ -516,9 +486,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .marquee-track, .cta-blob, .arch-float, .badge::before, .scroll-hint .mouse::before, .running-line { animation: none !important; }
+    .marquee-track, .cta-blob, .arch-float, .badge::before, .running-line { animation: none !important; }
     .reveal, .hero-content .anim, .hero-card { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
-    .cursor-glow { display: none; }
   }
 
   /* ===== SUBPAGE EXTRAS ===== */
@@ -563,7 +532,6 @@
     .plugin-line { display: none; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .arch-float { display: none; }
-    .scroll-hint { display: none; }
     .hero { padding-bottom: 70px; }
   }
   @media(max-width: 680px) {
@@ -573,7 +541,6 @@
     .hamburger { display: flex; }
     .why-grid, .case-grid, .aud-grid, .footer-grid, .grid-2 { grid-template-columns: 1fr; }
     .hero-card { padding: 28px; }
-    .cursor-glow { display: none; }
   }
 </style>
 </head>
@@ -607,23 +574,12 @@
   </style>
 </svg>
 
-<!-- PRELOADER -->
-<script>(function(){try{if(sessionStorage.getItem('magnaSplash')==='1')document.documentElement.classList.add('no-splash');}catch(e){}})();</script>
-<div class="preloader" id="preloader">
-  <div class="pre-logo">
-    <svg class="logo-mark"><use href="#magna-mark"/></svg>
-    <span>magna</span>
-  </div>
-  <div class="pre-bar"><i></i></div>
-</div>
-
 <div class="scroll-progress" id="scrollProgress"></div>
-<div class="cursor-glow" id="cursorGlow"></div>
 
 <!-- HEADER -->
 <header id="header">
   <div class="container nav-wrap">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -639,7 +595,7 @@
       </ul>
     </nav>
     <div class="nav-right">
-      <a href="#get-started" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -650,7 +606,7 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="mm-top">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -659,7 +615,7 @@
     </button>
   </div>
   <nav class="mm-links">
-    <a href="index.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a href="home.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="why-magna.html"><span class="mm-idx">02</span>Why Magna<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="features.html"><span class="mm-idx">03</span>Features<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="page-builder.html"><span class="mm-idx">04</span>Page Builder<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -670,9 +626,9 @@
     <a href="#" data-doc-link><span class="mm-idx">09</span>Documentation<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </nav>
   <div class="mm-foot">
-    <a href="#get-started" class="btn btn-primary">Get Started
+    <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    <div class="mm-note">Open source · Built to be built on</div>
+    <div class="mm-note">Open source · MIT licence</div>
   </div>
 </div>
 
@@ -684,7 +640,7 @@
     <div class="hero-content hero-single">
       <div class="badge light anim">Comparison</div>
       <h1 class="anim">A different approach to <em>content management</em></h1>
-      <p class="anim">Established platforms like WordPress shaped the web, and they remain the right choice for many projects. Magna takes a different path, designed in this decade around today's requirements. Here's the philosophical difference, stated plainly.</p>
+      <p class="anim">Established platforms like WordPress shaped the web and remain the right choice for many projects. Magna makes a different set of trade-offs. This page lays them out, including the cases where Magna is the wrong pick.</p>
     </div>
   </div>
 </section>
@@ -693,8 +649,8 @@
 <section class="problem">
   <div class="container">
     <div class="prose reveal">
-      <p>Platforms inherit the assumptions of their era. A CMS designed in the early 2000s optimised for publishing pages to readers. A CMS designed now assumes websites are applications, teams work like engineering organisations, and requirements change mid-flight.</p>
-      <p>Neither assumption set is wrong. They're answers to different questions.</p>
+      <p>Platforms inherit the assumptions of their era. A CMS designed in the early 2000s optimised for publishing pages to readers, and has carried that model forward carefully ever since. A CMS designed now can assume engineering teams, APIs and version control from the start.</p>
+      <p>Neither assumption set is wrong. They answer different questions, and the table below compares the answers rather than scoring them.</p>
     </div>
   </div>
 </section>
@@ -703,21 +659,20 @@
 <section class="why">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Philosophy, Not Benchmarks</div>
+      <div class="badge">Design, Not Benchmarks</div>
       <h2>Two eras, <em>two sets of assumptions</em></h2>
+      <p>This compares design decisions, which you can verify in the code, rather than performance, which this site makes no claims about.</p>
     </div>
     <div class="cmp-wrap reveal">
       <table class="cmp">
-        <thead><tr><th>Area</th><th>Traditional CMS approach</th><th>Magna CMS approach</th></tr></thead>
+        <thead><tr><th>Area</th><th>Established CMS approach</th><th>Magna CMS approach</th></tr></thead>
         <tbody>
-          <tr><td>Architecture</td><td>Foundations from an earlier era, evolved carefully over decades</td><td class="magna">Laravel-native architecture designed today</td></tr>
-          <tr><td>Delivery</td><td>Server-rendered pages first; headless as a bolt-on</td><td class="magna">Headless-first API, with a website frontend you can switch on</td></tr>
-          <tr><td>Content schema</td><td>Generic post tables with layered metadata</td><td class="magna">Schema as code, synced to real, typed database tables</td></tr>
-          <tr><td>Core scope</td><td>Feature-rich cores grown by accretion</td><td class="magna">Deliberately focused core; everything else modular</td></tr>
-          <tr><td>Extensibility</td><td>Vast ecosystems of varying quality, compatibility and security</td><td class="magna">Composer packages with manifests, declared permissions and a fault-tolerant runtime</td></tr>
-          <tr><td>Security</td><td>Hardened over time, often via plugins</td><td class="magna">Argon2id, 2FA, scoped API keys, RBAC and an append-only audit log as defaults</td></tr>
-          <tr><td>Development</td><td>Workflows shaped by platform history</td><td class="magna">Version control, environments and framework conventions as the default path</td></tr>
-          <tr><td>Applications</td><td>Primarily website-focused; applications possible with effort</td><td class="magna">Designed for websites and the applications they become</td></tr>
+          <tr><td>Foundation</td><td>Platform-specific conventions, built up over time</td><td class="magna">Laravel 13, Filament 5 and PHP 8.3, used the way the framework intends</td></tr>
+          <tr><td>Delivery</td><td>Server-rendered pages first, with APIs added later</td><td class="magna">A versioned REST API in the core; website rendering through the Pages plugin, currently alpha</td></tr>
+          <tr><td>Content schema</td><td>Generic content tables with layered metadata</td><td class="magna">Typed content types you can export, diff and sync as schema files</td></tr>
+          <tr><td>Extensibility</td><td>Large ecosystems with their own extension conventions</td><td class="magna">Composer packages with manifests and declared permissions</td></tr>
+          <tr><td>Security</td><td>Hardened over time, often through plugins</td><td class="magna">Argon2id, per-role 2FA, role-based access and an append-only audit log in the core</td></tr>
+          <tr><td>Licence and hosting</td><td>Varies by platform</td><td class="magna">MIT, self-hosted on ordinary PHP hosting</td></tr>
         </tbody>
       </table>
     </div>
@@ -729,42 +684,41 @@
   <div class="container">
     <div class="section-head reveal">
       <div class="badge">Versus Hosted Headless</div>
-      <h2>Own your platform, <em>own your data</em></h2>
-      <p>Hosted headless platforms are excellent products, but you pay per record, per call and per seat, on infrastructure you'll never own. Magna is MIT-licensed and self-hosted: no per-record fees, no seat limits, no vendor lock-in.</p>
+      <h2>Self-hosted, <em>by design</em></h2>
+      <p>Hosted headless platforms are good products that trade ownership for convenience: the vendor runs the infrastructure and holds the content. Magna makes the opposite trade. You run it, and the content sits in your own database.</p>
     </div>
     <div class="cmp-wrap reveal">
       <table class="cmp">
         <thead><tr><th></th><th>Magna CMS</th><th>Typical hosted headless CMS</th></tr></thead>
         <tbody>
-          <tr><td>Pricing</td><td class="magna">Free, self-hosted, open source</td><td>Monthly plans, usage-based tiers</td></tr>
-          <tr><td>Data ownership</td><td class="magna">Full. Your server, your database</td><td>Vendor-hosted</td></tr>
-          <tr><td>Licence</td><td class="magna">MIT</td><td>Closed or partially open</td></tr>
-          <tr><td>Self-hosting</td><td class="magna">Yes, on ordinary PHP hosting</td><td>Generally unavailable</td></tr>
-          <tr><td>Lock-in</td><td class="magna">None</td><td>Varies, often high</td></tr>
+          <tr><td>Cost model</td><td class="magna">Free software; you pay for your own hosting</td><td>Vendor plans; pricing varies by vendor</td></tr>
+          <tr><td>Data location</td><td class="magna">Your server, your database</td><td>The vendor's infrastructure</td></tr>
+          <tr><td>Licence</td><td class="magna">MIT, source on GitHub</td><td>Closed or partially open</td></tr>
+          <tr><td>Self-hosting</td><td class="magna">Yes, on ordinary PHP hosting</td><td>Generally not offered</td></tr>
+          <tr><td>Frontend</td><td class="magna">Your own over the API, or the Pages plugin, currently alpha</td><td>Your own over the API</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- HONEST ASSESSMENT -->
+<!-- WHEN NOT TO CHOOSE MAGNA -->
 <section class="cases">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge light">An Honest Assessment</div>
-      <h2>The right platform <em>depends on the project</em></h2>
-      <p>If you need the largest possible theme catalogue, a plugin for almost anything, and two decades of community answers, then a mature platform like WordPress remains a strong, sensible choice. We won't pretend otherwise. Magna is designed for a different profile of team:</p>
+      <div class="badge light">The Other Side</div>
+      <h2>When Magna is <em>not the right fit</em></h2>
+      <p>Some projects are better served elsewhere, and it is cheaper to find that out on this page than after a build starts. Pick something else if any of these describe you:</p>
     </div>
     <div class="case-grid grid-2">
-      <div class="case-chip reveal"><h4>Headless-minded teams</h4><p>Who want content as data behind an API without giving up a working website.</p></div>
-      <div class="case-chip reveal d1"><h4>Growing projects</h4><p>That may outgrow "website" and become portals, memberships or custom platforms.</p></div>
-      <div class="case-chip reveal d2"><h4>Laravel developers</h4><p>Who want extension work to feel like normal software engineering.</p></div>
-      <div class="case-chip reveal d3"><h4>Agencies</h4><p>Standardising on a stack they can reuse, extend and control.</p></div>
-      <div class="case-chip reveal"><h4>Security-conscious businesses</h4><p>That value a focused, auditable core with concrete defaults over maximum surface area.</p></div>
-      <div class="case-chip reveal d1"><h4>Ownership-first teams</h4><p>Who want their CMS self-hosted, MIT-licensed and free of per-record economics.</p></div>
+      <div class="case-chip reveal"><h4>You need a big marketplace today</h4><p>Magna's official plugin and theme catalogue is still small. If the project depends on off-the-shelf extensions for everything, a mature ecosystem serves it better.</p></div>
+      <div class="case-chip reveal d1"><h4>You want managed hosting and support</h4><p>Magna is self-hosted. If nobody on the team wants to run a server, a hosted platform removes that work.</p></div>
+      <div class="case-chip reveal d2"><h4>You need a mature visual builder now</h4><p>The Pages plugin and its builder are in alpha. Teams that need a polished page-building experience today should wait or look elsewhere.</p></div>
+      <div class="case-chip reveal d3"><h4>Your team does not work in PHP</h4><p>Magna's extension story is Laravel. A team that builds in another stack gives up most of the benefit, apart from the headless API.</p></div>
     </div>
     <div class="cases-foot reveal">
-      <p>If several of those describe you, Magna deserves a serious look.</p>
+      <p>If none of those apply, and your team works in Laravel, the fit is probably good.</p>
+      <a href="why-magna.html" class="btn btn-ghost">Why Magna →</a>
     </div>
   </div>
 </section>
@@ -774,12 +728,12 @@
   <div class="cta-blob b1"></div>
   <div class="cta-blob b2"></div>
   <div class="container cta-inner reveal">
-    <h2>The credible way to evaluate it is <em>hands on</em></h2>
-    <p>Run the installer, define a content type, hit the API. Then decide.</p>
+    <h2>Evaluate it <em>hands on</em></h2>
+    <p>Run the installer, define a content type and call the API. An afternoon with the real thing settles more than any comparison table.</p>
     <div class="cta-btns">
-      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a href="developers.html" class="btn btn-ghost">Read the Documentation</a>
+      <a href="developers.html" class="btn btn-ghost">Developer Guide</a>
     </div>
   </div>
 </section>
@@ -790,15 +744,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">
+        <a href="home.html" class="logo">
           <svg class="logo-mark"><use href="#magna-mark"/></svg>
           magna<span class="cms">CMS</span>
         </a>
         <p>An extensible, developer-grade CMS for the web as it is today. Open source, and built to be built on.</p>
         <div class="footer-socials">
           <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0.3a12 12 0 0 0-3.8 23.4c0.6 0.1 0.8-0.3 0.8-0.6v-2c-3.3 0.7-4-1.6-4-1.6-0.5-1.4-1.3-1.8-1.3-1.8-1.1-0.7 0.1-0.7 0.1-0.7 1.2 0.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 0.1-0.8 0.4-1.3 0.8-1.6-2.7-0.3-5.5-1.3-5.5-5.9 0-1.3 0.5-2.4 1.2-3.2-0.1-0.3-0.5-1.5 0.1-3.2 0 0 1-0.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2 0.6 1.7 0.2 2.9 0.1 3.2 0.8 0.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9 0.4 0.4 0.8 1.1 0.8 2.2v3.3c0 0.3 0.2 0.7 0.8 0.6A12 12 0 0 0 12 0.3z"/></svg></a>
-          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H2l8-9.2L1.5 2h7l4.8 6.3zM17.7 20h1.7L7.4 3.9H5.6z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4zM8 8h3.8v2.2h.05c.53-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-7.1c0-1.7 0-3.9-2.4-3.9s-2.75 1.85-2.75 3.77V24H8z"/></svg></a>
         </div>
       </div>
       <div class="footer-col"><h4>Product</h4><ul>
@@ -815,7 +767,6 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Magna CMS. Open source, released under the MIT licence.</span>
-      <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
     </div>
   </div>
 </footer>
@@ -825,21 +776,9 @@
 </button>
 
 <script>
-  /* ===== PRELOADER (once per session) ===== */
-  const pre = document.getElementById('preloader');
+  /* ===== HERO ENTRANCE ===== */
   const heroEl = document.querySelector('.hero');
-  const finishSplash = () => {
-    pre.classList.add('done');
-    heroEl && heroEl.classList.add('loaded');
-    try { sessionStorage.setItem('magnaSplash', '1'); } catch (e) {}
-  };
-  if (document.documentElement.classList.contains('no-splash')) {
-    heroEl && heroEl.classList.add('loaded');
-  } else {
-    window.addEventListener('load', () => setTimeout(finishSplash, 1100));
-    /* Safety fallback: never leave the preloader stuck */
-    setTimeout(finishSplash, 4000);
-  }
+  heroEl && heroEl.classList.add('loaded');
 
   /* ===== HEADER SCROLL + PROGRESS ===== */
   const header = document.getElementById('header');
@@ -864,17 +803,6 @@
   mmClose.addEventListener('click', closeMenu);
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-
-  /* ===== CURSOR GLOW ===== */
-  const glow = document.getElementById('cursorGlow');
-  if (window.matchMedia('(pointer:fine)').matches) {
-    window.addEventListener('mousemove', e => {
-      glow.style.opacity = '1';
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
-    document.addEventListener('mouseleave', () => glow.style.opacity = '0');
-  }
 
   /* ===== REVEAL ON SCROLL ===== */
   const io = new IntersectionObserver((entries) => {

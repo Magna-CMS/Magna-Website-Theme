@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Magna CMS Features — Content, API, Plugins, Security</title>
-<meta name="description" content="Explore Magna CMS: schema-as-code content, headless REST API, plugin architecture and security features — honestly labelled by what's shipped and what's coming.">
-<link rel="icon" type="image/svg+xml" href="/magna-logo.svg">
+<meta name="description" content="What Magna CMS does today: typed content with schema as code, a REST delivery API, Composer-based plugins, security defaults and a hardened media pipeline. The visual builder is in alpha.">
+<link rel="icon" type="image/svg+xml" href="magna-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,31 +67,6 @@
     background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
     z-index: 2000; transition: width 0.1s linear;
   }
-
-  /* ===== CUSTOM CURSOR ===== */
-  .cursor-glow {
-    position: fixed; top: 0; left: 0; width: 380px; height: 380px;
-    border-radius: 50%; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-    transform: translate(-50%,-50%); opacity: 0; transition: opacity 0.4s ease;
-    mix-blend-mode: multiply;
-  }
-
-  /* ===== PRELOADER ===== */
-  .preloader {
-    position: fixed; inset: 0; z-index: 5000; background: var(--bg-dark);
-    display: flex; align-items: center; justify-content: center; flex-direction: column;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  .preloader.done { opacity: 0; visibility: hidden; }
-  .preloader.skip, html.no-splash .preloader { display: none; }
-  .pre-logo { display: flex; align-items: center; gap: 14px; opacity: 0; animation: preIn 0.8s var(--ease) forwards; }
-  .pre-logo .logo-mark { width: 52px; height: 52px; }
-  .pre-logo span { font-family: var(--serif); font-size: 42px; font-weight: 700; color: #fff; letter-spacing: -0.04em; }
-  .pre-bar { width: 180px; height: 2px; background: var(--border-dark); margin-top: 24px; overflow: hidden; border-radius: 2px; }
-  .pre-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,var(--accent-3),var(--accent),var(--accent-2)); animation: preLoad 1.3s ease forwards; }
-  @keyframes preIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(14px); } }
-  @keyframes preLoad { to { width: 100%; } }
 
   /* ===== BUTTONS ===== */
   .btn {
@@ -247,11 +222,6 @@
   .hero-card ul { list-style: none; display: grid; gap: 12px; text-align: left; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 24px; }
   .hero-card ul li { font-size: 14px; color: #d6daec; font-weight: 500; display: flex; align-items: center; gap: 10px; }
   .hero-card ul li svg { width: 16px; height: 16px; color: var(--accent-3); flex-shrink: 0; }
-
-  .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #8b91ad; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; }
-  .scroll-hint .mouse { width: 24px; height: 38px; border: 2px solid rgba(255,255,255,0.3); border-radius: 14px; position: relative; }
-  .scroll-hint .mouse::before { content:""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent-3); border-radius: 2px; animation: scrollWheel 1.6s infinite; }
-  @keyframes scrollWheel { 0%{ opacity:1; top: 7px;} 70%{ opacity:0; top: 18px;} 100%{opacity:0;} }
 
   /* ===== MARQUEE ===== */
   .trust { background: var(--bg-dark); padding: 0 0 60px; overflow: hidden; }
@@ -516,9 +486,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .marquee-track, .cta-blob, .arch-float, .badge::before, .scroll-hint .mouse::before, .running-line { animation: none !important; }
+    .marquee-track, .cta-blob, .arch-float, .badge::before, .running-line { animation: none !important; }
     .reveal, .hero-content .anim, .hero-card { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
-    .cursor-glow { display: none; }
   }
 
   /* ===== SUBPAGE EXTRAS ===== */
@@ -563,7 +532,6 @@
     .plugin-line { display: none; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .arch-float { display: none; }
-    .scroll-hint { display: none; }
     .hero { padding-bottom: 70px; }
   }
   @media(max-width: 680px) {
@@ -573,7 +541,6 @@
     .hamburger { display: flex; }
     .why-grid, .case-grid, .aud-grid, .footer-grid, .grid-2 { grid-template-columns: 1fr; }
     .hero-card { padding: 28px; }
-    .cursor-glow { display: none; }
   }
 </style>
 </head>
@@ -607,23 +574,12 @@
   </style>
 </svg>
 
-<!-- PRELOADER -->
-<script>(function(){try{if(sessionStorage.getItem('magnaSplash')==='1')document.documentElement.classList.add('no-splash');}catch(e){}})();</script>
-<div class="preloader" id="preloader">
-  <div class="pre-logo">
-    <svg class="logo-mark"><use href="#magna-mark"/></svg>
-    <span>magna</span>
-  </div>
-  <div class="pre-bar"><i></i></div>
-</div>
-
 <div class="scroll-progress" id="scrollProgress"></div>
-<div class="cursor-glow" id="cursorGlow"></div>
 
 <!-- HEADER -->
 <header id="header">
   <div class="container nav-wrap">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -639,7 +595,7 @@
       </ul>
     </nav>
     <div class="nav-right">
-      <a href="#get-started" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -650,7 +606,7 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="mm-top">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -659,7 +615,7 @@
     </button>
   </div>
   <nav class="mm-links">
-    <a href="index.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a href="home.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="why-magna.html"><span class="mm-idx">02</span>Why Magna<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="features.html"><span class="mm-idx">03</span>Features<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="page-builder.html"><span class="mm-idx">04</span>Page Builder<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -670,9 +626,9 @@
     <a href="#" data-doc-link><span class="mm-idx">09</span>Documentation<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </nav>
   <div class="mm-foot">
-    <a href="#get-started" class="btn btn-primary">Get Started
+    <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    <div class="mm-note">Open source · Built to be built on</div>
+    <div class="mm-note">Open source · MIT licence</div>
   </div>
 </div>
 
@@ -683,10 +639,10 @@
   <div class="container" style="position:relative;z-index:2">
     <div class="hero-content hero-single">
       <div class="badge light anim">Platform Overview</div>
-      <h1 class="anim">Everything a content platform needs. <em>Nothing it doesn't.</em></h1>
-      <p class="anim">A focused core for content, a headless API for any frontend, and an extension architecture for everything else. Labelled honestly by what's shipped, what's being built, and what's planned.</p>
+      <h1 class="anim">What's in the core, <em>and what's still alpha</em></h1>
+      <p class="anim">A tour of the platform, area by area. Everything marked available ships in the core today. The website frontend and visual builder come from the Pages plugin, which is in alpha and marked as such.</p>
       <div class="hero-btns anim">
-        <a href="#get-started" class="btn btn-primary">Get Started
+        <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a href="compare.html" class="btn btn-ghost">Compare Magna CMS</a>
       </div>
@@ -698,17 +654,17 @@
 <section class="why">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Content Management</div>
-      <h2>Structured content, <em>done properly</em></h2>
-      <p>Content types are defined as schema and synced to real, typed database tables, not stuffed into one generic table.</p>
+      <div class="badge">Content Modelling</div>
+      <h2>Typed content, <em>kept in version control</em></h2>
+      <p>Content types are typed schemas. You can build them in the admin, then export, diff and sync them between environments as code.</p>
     </div>
     <div class="feat-rows">
-      <div class="feat-row reveal"><div><h4>Content type builder</h4><p>Define custom content types with typed fields, visually in the admin panel or via the CLI. Schema syncs to real database tables.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Content organisation</h4><p>Structure, slugs and status workflows (draft to published) that keep growing libraries navigable.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Media library</h4><p>Upload, organise and reuse images and files, served over the API alongside your content.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Block editor</h4><p>A structured block-based editor for rich content that respects your time and your markup.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Localisation</h4><p>Serve localised content over the API with the locale query parameter.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Revisions &amp; scheduling</h4><p>Content history and timed publishing.</p></div><span class="status plan">Planned</span></div>
+      <div class="feat-row reveal"><div><h4>Content type builder</h4><p>Define content types with typed fields in the admin panel. Entries get slugs and a draft-to-published status flow.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Schema as code</h4><p>Export, diff and sync content schemas between environments with the magna:schema artisan commands.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Field-level encryption</h4><p>Mark a field as encrypted in its schema and its values are stored encrypted at rest.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Localisation</h4><p>Mark fields as localisable, serve translations with the locale query parameter, and use locale-prefixed URLs on the frontend.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Structured block editor</h4><p>Rich content is stored as structured blocks rather than one opaque HTML string.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Revisions &amp; scheduling</h4><p>Content history and timed publishing in the core.</p></div><span class="status plan">Planned</span></div>
     </div>
   </div>
 </section>
@@ -717,15 +673,16 @@
 <section class="problem">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Headless API</div>
+      <div class="badge">Delivery API</div>
       <h2>Your content, <em>served as data</em></h2>
-      <p>A fast, consistent REST delivery API with scoped keys. Pagination, filtering, sorting, sparse fieldsets, relations and localisation are built in.</p>
+      <p>A versioned REST API for reading content from any frontend, with keys you can scope per client.</p>
     </div>
     <div class="feat-rows">
-      <div class="feat-row reveal"><div><h4>REST delivery API</h4><p>List and fetch entries by type, id or slug, and list media through <code>/api/v1/content/{type}</code> and friends.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Scoped API keys</h4><p>Generate keys per purpose, such as delivery scope for read-only public access, managed from the admin panel.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Query toolkit</h4><p>Pagination (cursor option available), field filters, sorting, sparse fieldsets, eager-loaded relations, locale selection.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>One-click website frontend</h4><p>Magna Pages turns the headless core into a full website, with a block editor, themes and live preview, when you don't need a custom frontend.</p></div><span class="status dev">Alpha 1.0.0</span></div>
+      <div class="feat-row reveal"><div><h4>REST delivery API</h4><p>List and fetch entries by type, id or slug, and list media, through <code>/api/v1/content/{type}</code> and related endpoints.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Scoped, expiring keys</h4><p>Delivery keys are read-only, scoped per client and expire on a schedule. Management keys are separate and shorter-lived.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Query toolkit</h4><p>Filters, sorting, sparse fieldsets, included relations, pagination and locale selection as query parameters.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Response caching</h4><p>Delivery responses are cached with ETags and surrogate keys, with CDN purge drivers for Cloudflare, Fastly and Varnish.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Website frontend</h4><p>The Pages plugin turns the same content into a rendered website with themes and a visual builder, when you don't need a custom frontend.</p></div><span class="status dev">Alpha</span></div>
     </div>
   </div>
 </section>
@@ -734,16 +691,16 @@
 <section class="why">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Plugin Architecture</div>
-      <h2>Extend the platform. <em>Don't patch it.</em></h2>
-      <p>Plugins are Composer packages with a manifest and declared permissions, enabled, disabled and sandboxed without touching core code.</p>
+      <div class="badge">Plugins</div>
+      <h2>Extensions that are <em>ordinary Composer packages</em></h2>
+      <p>A plugin is a Composer package with a magna.json manifest. It can depend on anything on Packagist, and it extends the Filament 5 admin through SDK contracts.</p>
     </div>
     <div class="feat-rows">
-      <div class="feat-row reveal"><div><h4>Manifest &amp; permissions</h4><p>Every plugin declares what it needs, such as content read/write or media access, in its <code>magna.json</code>. No mystery code with full access.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Fault-tolerant runtime</h4><p>A circuit breaker auto-disables crashing plugins before they take your site down.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Plugin scaffolding CLI</h4><p>Scaffold a working plugin skeleton with one artisan command: service provider, models, migrations and views included.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Admin integration</h4><p>Enabling a plugin auto-runs its migrations, registers routes and adds its admin sections. Disable with one click.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Official plugin catalogue</h4><p>Docs, Blog, SEO and Defence are live at v1.0.0; Pages is in alpha; Forms, Commerce and more are on the way.</p></div><span class="status dev">Growing</span></div>
+      <div class="feat-row reveal"><div><h4>Manifest &amp; permissions</h4><p>Every plugin declares what it needs, such as content read access, in its <code>magna.json</code>.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Boot-failure protection</h4><p>A plugin that fails to boot is disabled automatically, and core services are guarded against tampering by plugin code.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Full plugin CLI</h4><p>Artisan commands cover the whole lifecycle: make, validate, doctor, install, enable, disable, uninstall, list and info.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Admin integration</h4><p>Enabling a plugin runs its migrations and registers its routes, permissions and admin sections. Disabling it is one click.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Official catalogue</h4><p>Official plugins are published alongside the core, with Pages in alpha and others at various stages. The catalogue is young, and the list lives on the plugins page.</p></div><span class="status dev">Growing</span></div>
     </div>
   </div>
 </section>
@@ -752,15 +709,15 @@
 <section class="problem">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Security &amp; Administration</div>
-      <h2>Security as a process, <em>with proof</em></h2>
-      <p>Not a claim of invulnerability, but a set of concrete, inspectable defaults.</p>
+      <div class="badge">Security &amp; Access</div>
+      <h2>Concrete defaults <em>you can inspect</em></h2>
+      <p>The security features below are in the core, switched on, and visible in the public source.</p>
     </div>
     <div class="feat-rows">
-      <div class="feat-row reveal"><div><h4>Modern authentication</h4><p>Argon2id password hashing and two-factor authentication for admin users.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Role-based access control</h4><p>Scoped roles and permissions across content, media and administration.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Append-only audit log</h4><p>A tamper-resistant trail of who did what, when.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>System insights</h4><p>Engine, database, cache and environment status visible from the admin panel, including debug toggling without editing <code>.env</code>.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Authentication</h4><p>Argon2id password hashing, a 12-character minimum with a breached-password check, and lockout after repeated failed logins.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Two-factor authentication</h4><p>TOTP-based 2FA with recovery codes, and the option to require it per role.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Role-based access control</h4><p>Roles and permissions across content, media and administration, with seeded roles to start from.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Append-only audit log</h4><p>Entries cannot be edited or deleted once written, and the log exports as JSON lines for your own tooling.</p></div><span class="status avail">Available</span></div>
     </div>
   </div>
 </section>
@@ -769,14 +726,30 @@
 <section class="why">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Foundation</div>
-      <h2>Runs where <em>PHP runs</em></h2>
+      <div class="badge">Media</div>
+      <h2>A media pipeline that <em>doesn't trust uploads</em></h2>
     </div>
     <div class="feat-rows">
-      <div class="feat-row reveal"><div><h4>Laravel-native</h4><p>Built on Laravel, with its conventions, ecosystem and hiring pool included. If you know the framework, you know your way around.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Database flexibility</h4><p>MySQL, PostgreSQL or SQLite. Cache via Redis, database or file.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Browser installer</h4><p>Guided install: requirements check, site configuration, database connection, admin account. No terminal required.</p></div><span class="status avail">Available</span></div>
-      <div class="feat-row reveal"><div><h4>Open source</h4><p>MIT-licensed. Read the code, audit the behaviour, own your data.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Checked on the way in</h4><p>File types are detected from content rather than extensions, raster images are re-encoded to strip EXIF data and payloads, and SVGs are sanitised.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Organised library</h4><p>Folders, a recycle bin, and generated sizes for thumbnails, cards and hero images, with WebP variants on by default.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Storage options</h4><p>Local disk out of the box, S3-compatible storage when you need it, and media served over the API alongside content.</p></div><span class="status avail">Available</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- OPERATIONS -->
+<section class="problem">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="badge">Operations</div>
+      <h2>Install, update and run it <em>without drama</em></h2>
+    </div>
+    <div class="feat-rows">
+      <div class="feat-row reveal"><div><h4>Browser installer</h4><p>Requirements check, site configuration, database connection and admin account, all from the browser. No terminal required.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Signed one-click updates</h4><p>Core updates are signed, applied from the admin, and roll back if something goes wrong. Themes and licensed plugins deploy from zips the same way.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Runs where PHP runs</h4><p>MySQL, PostgreSQL or SQLite for the database; file, database or Redis for cache; Laravel Octane with FrankenPHP as the reference server.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Backups, webhooks and privacy tooling</h4><p>Scheduled backups with encryption and off-site disks, webhooks for events, and personal-data export and erase built in.</p></div><span class="status avail">Available</span></div>
+      <div class="feat-row reveal"><div><h4>Open source</h4><p>MIT-licensed, with the code public on GitHub and your content in your own database.</p></div><span class="status avail">Available</span></div>
     </div>
   </div>
 </section>
@@ -786,10 +759,10 @@
   <div class="cta-blob b1"></div>
   <div class="cta-blob b2"></div>
   <div class="container cta-inner reveal">
-    <h2>See it with <em>your own project</em> in mind</h2>
-    <p>The honest labels stay honest: what's shipped is shipped, what's coming is marked.</p>
+    <h2>Check the list against <em>your own project</em></h2>
+    <p>Everything above is either in the shipped core or labelled by its real status. The code behind each claim is public.</p>
     <div class="cta-btns">
-      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <a href="compare.html" class="btn btn-ghost">Compare Magna CMS</a>
     </div>
@@ -802,15 +775,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">
+        <a href="home.html" class="logo">
           <svg class="logo-mark"><use href="#magna-mark"/></svg>
           magna<span class="cms">CMS</span>
         </a>
         <p>An extensible, developer-grade CMS for the web as it is today. Open source, and built to be built on.</p>
         <div class="footer-socials">
           <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0.3a12 12 0 0 0-3.8 23.4c0.6 0.1 0.8-0.3 0.8-0.6v-2c-3.3 0.7-4-1.6-4-1.6-0.5-1.4-1.3-1.8-1.3-1.8-1.1-0.7 0.1-0.7 0.1-0.7 1.2 0.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 0.1-0.8 0.4-1.3 0.8-1.6-2.7-0.3-5.5-1.3-5.5-5.9 0-1.3 0.5-2.4 1.2-3.2-0.1-0.3-0.5-1.5 0.1-3.2 0 0 1-0.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2 0.6 1.7 0.2 2.9 0.1 3.2 0.8 0.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9 0.4 0.4 0.8 1.1 0.8 2.2v3.3c0 0.3 0.2 0.7 0.8 0.6A12 12 0 0 0 12 0.3z"/></svg></a>
-          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H2l8-9.2L1.5 2h7l4.8 6.3zM17.7 20h1.7L7.4 3.9H5.6z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4zM8 8h3.8v2.2h.05c.53-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-7.1c0-1.7 0-3.9-2.4-3.9s-2.75 1.85-2.75 3.77V24H8z"/></svg></a>
         </div>
       </div>
       <div class="footer-col"><h4>Product</h4><ul>
@@ -827,7 +798,6 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Magna CMS. Open source, released under the MIT licence.</span>
-      <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
     </div>
   </div>
 </footer>
@@ -837,21 +807,9 @@
 </button>
 
 <script>
-  /* ===== PRELOADER (once per session) ===== */
-  const pre = document.getElementById('preloader');
+  /* ===== HERO ENTRANCE ===== */
   const heroEl = document.querySelector('.hero');
-  const finishSplash = () => {
-    pre.classList.add('done');
-    heroEl && heroEl.classList.add('loaded');
-    try { sessionStorage.setItem('magnaSplash', '1'); } catch (e) {}
-  };
-  if (document.documentElement.classList.contains('no-splash')) {
-    heroEl && heroEl.classList.add('loaded');
-  } else {
-    window.addEventListener('load', () => setTimeout(finishSplash, 1100));
-    /* Safety fallback: never leave the preloader stuck */
-    setTimeout(finishSplash, 4000);
-  }
+  heroEl && heroEl.classList.add('loaded');
 
   /* ===== HEADER SCROLL + PROGRESS ===== */
   const header = document.getElementById('header');
@@ -876,17 +834,6 @@
   mmClose.addEventListener('click', closeMenu);
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-
-  /* ===== CURSOR GLOW ===== */
-  const glow = document.getElementById('cursorGlow');
-  if (window.matchMedia('(pointer:fine)').matches) {
-    window.addEventListener('mousemove', e => {
-      glow.style.opacity = '1';
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
-    document.addEventListener('mouseleave', () => glow.style.opacity = '0');
-  }
 
   /* ===== REVEAL ON SCROLL ===== */
   const io = new IntersectionObserver((entries) => {

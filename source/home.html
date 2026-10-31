@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magna CMS — A Modern, Extensible Content Management System</title>
-<meta name="description" content="Magna CMS is an open, extensible CMS for today's websites and applications. Visual page building for teams, clean architecture for developers.">
-<link rel="icon" type="image/svg+xml" href="/magna-logo.svg">
+<title>Magna CMS — Built on Laravel and Filament</title>
+<meta name="description" content="Magna is an open-source CMS built on Laravel 13 with a Filament 5 admin. Content over a REST API, plugins as ordinary Composer packages, and security switched on by default.">
+<link rel="icon" type="image/svg+xml" href="magna-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,31 +67,6 @@
     background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
     z-index: 2000; transition: width 0.1s linear;
   }
-
-  /* ===== CUSTOM CURSOR ===== */
-  .cursor-glow {
-    position: fixed; top: 0; left: 0; width: 380px; height: 380px;
-    border-radius: 50%; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-    transform: translate(-50%,-50%); opacity: 0; transition: opacity 0.4s ease;
-    mix-blend-mode: multiply;
-  }
-
-  /* ===== PRELOADER ===== */
-  .preloader {
-    position: fixed; inset: 0; z-index: 5000; background: var(--bg-dark);
-    display: flex; align-items: center; justify-content: center; flex-direction: column;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  .preloader.done { opacity: 0; visibility: hidden; }
-  .preloader.skip, html.no-splash .preloader { display: none; }
-  .pre-logo { display: flex; align-items: center; gap: 14px; opacity: 0; animation: preIn 0.8s var(--ease) forwards; }
-  .pre-logo .logo-mark { width: 52px; height: 52px; }
-  .pre-logo span { font-family: var(--serif); font-size: 42px; font-weight: 700; color: #fff; letter-spacing: -0.04em; }
-  .pre-bar { width: 180px; height: 2px; background: var(--border-dark); margin-top: 24px; overflow: hidden; border-radius: 2px; }
-  .pre-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,var(--accent-3),var(--accent),var(--accent-2)); animation: preLoad 1.3s ease forwards; }
-  @keyframes preIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(14px); } }
-  @keyframes preLoad { to { width: 100%; } }
 
   /* ===== BUTTONS ===== */
   .btn {
@@ -247,11 +222,6 @@
   .hero-card ul { list-style: none; display: grid; gap: 12px; text-align: left; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 24px; }
   .hero-card ul li { font-size: 14px; color: #d6daec; font-weight: 500; display: flex; align-items: center; gap: 10px; }
   .hero-card ul li svg { width: 16px; height: 16px; color: var(--accent-3); flex-shrink: 0; }
-
-  .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #8b91ad; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; }
-  .scroll-hint .mouse { width: 24px; height: 38px; border: 2px solid rgba(255,255,255,0.3); border-radius: 14px; position: relative; }
-  .scroll-hint .mouse::before { content:""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent-3); border-radius: 2px; animation: scrollWheel 1.6s infinite; }
-  @keyframes scrollWheel { 0%{ opacity:1; top: 7px;} 70%{ opacity:0; top: 18px;} 100%{opacity:0;} }
 
   /* ===== MARQUEE ===== */
   .trust { background: var(--bg-dark); padding: 0 0 60px; overflow: hidden; }
@@ -516,9 +486,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .marquee-track, .cta-blob, .arch-float, .badge::before, .scroll-hint .mouse::before, .running-line { animation: none !important; }
+    .marquee-track, .cta-blob, .arch-float, .badge::before, .running-line { animation: none !important; }
     .reveal, .hero-content .anim, .hero-card { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
-    .cursor-glow { display: none; }
   }
 
   .grid-2 { grid-template-columns: repeat(2, 1fr); }
@@ -539,7 +508,6 @@
     .plugin-line { display: none; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .arch-float { display: none; }
-    .scroll-hint { display: none; }
     .hero { padding-bottom: 70px; }
   }
   @media(max-width: 680px) {
@@ -549,7 +517,6 @@
     .hamburger { display: flex; }
     .why-grid, .case-grid, .aud-grid, .footer-grid, .grid-2 { grid-template-columns: 1fr; }
     .hero-card { padding: 28px; }
-    .cursor-glow { display: none; }
   }
 </style>
 </head>
@@ -583,23 +550,12 @@
   </style>
 </svg>
 
-<!-- PRELOADER -->
-<script>(function(){try{if(sessionStorage.getItem('magnaSplash')==='1')document.documentElement.classList.add('no-splash');}catch(e){}})();</script>
-<div class="preloader" id="preloader">
-  <div class="pre-logo">
-    <svg class="logo-mark"><use href="#magna-mark"/></svg>
-    <span>magna</span>
-  </div>
-  <div class="pre-bar"><i></i></div>
-</div>
-
 <div class="scroll-progress" id="scrollProgress"></div>
-<div class="cursor-glow" id="cursorGlow"></div>
 
 <!-- HEADER -->
 <header id="header">
   <div class="container nav-wrap">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -615,7 +571,7 @@
       </ul>
     </nav>
     <div class="nav-right">
-      <a href="#get-started" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -626,7 +582,7 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="mm-top">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -635,7 +591,7 @@
     </button>
   </div>
   <nav class="mm-links">
-    <a href="index.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a href="home.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="why-magna.html"><span class="mm-idx">02</span>Why Magna<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="features.html"><span class="mm-idx">03</span>Features<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="page-builder.html"><span class="mm-idx">04</span>Page Builder<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -646,9 +602,9 @@
     <a href="#" data-doc-link><span class="mm-idx">09</span>Documentation<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </nav>
   <div class="mm-foot">
-    <a href="#get-started" class="btn btn-primary">Get Started
+    <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    <div class="mm-note">Open source · Built to be built on</div>
+    <div class="mm-note">Open source · MIT licence</div>
   </div>
 </div>
 
@@ -660,121 +616,85 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-content">
-        <div class="badge light anim">Open-Source Content Platform</div>
-        <h1 class="anim">The web moved forward. <em>Your CMS should too.</em></h1>
-        <p class="anim">Magna CMS is a modern, extensible, headless-first content management system for websites, platforms and the applications they grow into. Serve content over the API to any frontend, or launch Magna's ready-made frontend with one click. Visual building for content teams. Clean architecture for developers.</p>
+        <div class="badge light anim">Open Source · MIT Licence</div>
+        <h1 class="anim">The open-source CMS built on <em>Laravel and Filament</em></h1>
+        <p class="anim">Magna is an API-first content platform on Laravel 13, with an admin panel built on Filament 5. Plugins are ordinary Composer packages, so the Laravel ecosystem your team already uses carries straight over. Editors get a clean admin; developers get a codebase they can read.</p>
         <div class="hero-btns anim">
-          <a href="#get-started" class="btn btn-primary">Get Started
+          <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          <a href="#builder" class="btn btn-ghost">See How It Works</a>
+          <a href="why-magna.html" class="btn btn-ghost">Why Magna</a>
         </div>
         <div class="hero-sub anim">
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Open source</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Headless-first API</span>
-          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Extensible by design</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>PHP 8.3</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>REST delivery API</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Self-hosted</span>
         </div>
       </div>
       <div class="hero-card">
         <svg class="logo-mark"><use href="#magna-mark"/></svg>
-        <div class="kicker">The Magna Core</div>
-        <h3>Focused. Open. Yours.</h3>
+        <div class="kicker">Under the hood</div>
+        <h3>A stack you already know</h3>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Deliberately focused core</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Headless API or one-click frontend</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Real plugin architecture</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Visual page building</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Security-conscious architecture</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Laravel 13 foundation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Filament 5 admin panel</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Plugins as Composer packages</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>MySQL, PostgreSQL or SQLite</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Runs on Octane and FrankenPHP</li>
         </ul>
       </div>
     </div>
   </div>
-
-  <div class="scroll-hint">
-    <div class="mouse"></div>
-    <span>Scroll</span>
-  </div>
 </section>
 
-<!-- USE-CASE MARQUEE -->
+<!-- STACK MARQUEE -->
 <div class="trust">
-  <div class="container"><div class="trust-label">One foundation, many second acts</div></div>
+  <div class="container"><div class="trust-label">What's in the box</div></div>
   <div class="marquee">
     <div class="marquee-track">
-      <span>Company Websites</span><span>Content Platforms</span><span>Customer Portals</span><span>Membership Platforms</span><span>Directories</span><span>Marketplaces</span><span>Internal Systems</span><span>Custom Applications</span>
-      <span>Company Websites</span><span>Content Platforms</span><span>Customer Portals</span><span>Membership Platforms</span><span>Directories</span><span>Marketplaces</span><span>Internal Systems</span><span>Custom Applications</span>
+      <span>Laravel 13</span><span>Filament 5</span><span>PHP 8.3</span><span>REST API</span><span>MIT Licence</span><span>Composer Plugins</span><span>SQLite to Postgres</span><span>Octane + FrankenPHP</span>
+      <span>Laravel 13</span><span>Filament 5</span><span>PHP 8.3</span><span>REST API</span><span>MIT Licence</span><span>Composer Plugins</span><span>SQLite to Postgres</span><span>Octane + FrankenPHP</span>
     </div>
   </div>
 </div>
-
-<!-- THE PROBLEM -->
-<section class="problem" id="problem">
-  <div class="container">
-    <div class="section-head reveal">
-      <div class="badge">The Shift</div>
-      <h2>Websites changed. <em>Most platforms didn't.</em></h2>
-    </div>
-    <div class="problem-grid">
-      <div class="problem-text reveal">
-        <p>WordPress changed how the world built websites, and it deserves that legacy. But the internet it was created for in 2003 is not the internet we build for today.</p>
-        <p>Websites are now applications. They talk to payment systems, CRMs and internal tools. They serve logged-in customers, not just readers. Performance is measured in milliseconds, security is a board-level concern, and development teams work with frameworks, APIs and version control, not FTP.</p>
-        <p>Most established platforms have spent twenty years adapting to that shift. Magna CMS was designed inside it.</p>
-        <div class="problem-quote">This is what a CMS looks like when you design it now.</div>
-      </div>
-      <div class="shift-list reveal d1">
-        <div class="shift-item">
-          <div class="shift-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-          <div><h4>Sites became software</h4><p>Integrations, authentication and application behaviour are now the baseline, not the edge case.</p></div>
-        </div>
-        <div class="shift-item">
-          <div class="shift-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-          <div><h4>Expectations rose</h4><p>Performance and security stopped being nice-to-haves and became requirements teams are accountable for.</p></div>
-        </div>
-        <div class="shift-item">
-          <div class="shift-icon"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
-          <div><h4>Workflows matured</h4><p>Frameworks, APIs and version control became normal engineering practice. A CMS should fit them.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- WHY MAGNA -->
 <section class="why" id="why">
   <div class="container">
     <div class="section-head reveal">
       <div class="badge">Why Magna</div>
-      <h2>Built on <em>different assumptions</em></h2>
+      <h2>Why build on <em>Magna</em></h2>
+      <p>Most CMS platforms ask you to learn their world. Magna is built from parts a Laravel developer already knows, and that decision pays off everywhere.</p>
     </div>
     <div class="why-grid">
       <div class="why-card reveal">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-        <h3>Designed today</h3>
-        <p>No decades of backwards compatibility steering the architecture. Magna starts from current engineering practice, which means cleaner foundations and fewer inherited compromises.</p>
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+        <h3>Your Laravel skills carry over</h3>
+        <p>Magna plugins are ordinary Composer packages on Laravel, so any Laravel package can be a dependency. The admin is Filament 5, and plugins add admin resources, settings pages and dashboard widgets through SDK contracts.</p>
       </div>
       <div class="why-card reveal d1">
         <div class="why-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-        <h3>Modular by design</h3>
-        <p>A focused core, with everything else as modules and plugins. Your site carries the functionality it uses, not the weight of features you'll never touch.</p>
+        <h3>A real plugin workflow</h3>
+        <p>One artisan command scaffolds a plugin into plugins-dev/. Migrations run when you enable it, and a plugin that fails to boot is disabled automatically rather than taking the admin down with it.</p>
       </div>
       <div class="why-card reveal d2">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
-        <h3>Developer-grade</h3>
-        <p>Extending Magna feels like working with a framework, not around a product. Clean structure, sensible APIs, and plugin development that fits contemporary workflows.</p>
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div>
+        <h3>Content as data</h3>
+        <p>Content types are typed schemas you can export, diff and sync as code. Entries are served over a versioned REST API with scoped keys, filtering, sparse fields and per-locale queries.</p>
       </div>
       <div class="why-card reveal">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
-        <h3>Flexible for business</h3>
-        <p>A company site today, a customer portal next quarter, a full platform next year. Magna doesn't assume what your project becomes.</p>
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Security on by default</h3>
+        <p>Argon2id password hashing, two-factor authentication you can require per role, role-based access control and an append-only audit log. These ship in the core, not as paid add-ons.</p>
       </div>
       <div class="why-card reveal d1">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-        <h3>Visual page building</h3>
-        <p>Content teams design and publish pages visually, from layouts and reusable sections to global headers and footers, without waiting on a developer.</p>
+        <div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Simple to run</h3>
+        <p>Install from the browser without touching a terminal. Start on SQLite and move to MySQL or PostgreSQL when you need to; cache on files out of the box or Redis when you want it.</p>
       </div>
       <div class="why-card reveal d2">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <h3>Security-conscious architecture</h3>
-        <p>Security is a design consideration, not an afterthought: contemporary authentication patterns, controlled extension points, and a core you can reason about.</p>
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
+        <h3>Open source, MIT</h3>
+        <p>The core is MIT-licensed and public on GitHub. You can read the code before you commit to it, host it yourself, and keep your content in your own database.</p>
       </div>
     </div>
   </div>
@@ -785,21 +705,21 @@
   <div class="container arch-grid">
     <div class="arch-text reveal">
       <div class="badge">Architecture</div>
-      <h2>Architecture you can <em>build a business on</em></h2>
-      <p>Magna is built on a contemporary, framework-based foundation with a modular core, clear extension points and API access. Plugins add functionality without modifying core code, so upgrades stay predictable and customisations stay yours.</p>
-      <p>Commercially, that means customisation that doesn't turn into technical debt, a platform your next developer can pick up quickly, and a site that's still maintainable in year five instead of a rebuild waiting to happen.</p>
-      <div class="arch-quote">Good architecture isn't a developer luxury.<br>It's the difference between a platform and a liability.</div>
-      <a href="#plugins" class="btn btn-dark">Explore the Plugin System
+      <h2>A stack you can <em>reason about</em></h2>
+      <p>Magna sits on Laravel 13 and PHP 8.3, and serves its admin with Filament 5. The core handles content types, entries, media, users and the delivery API. Everything else is a plugin.</p>
+      <p>Because plugins are Composer packages, your custom code lives in version control like the rest of your work, and the next developer who joins already knows the framework underneath.</p>
+      <div class="arch-quote">If you can maintain a Laravel application,<br>you can maintain a Magna site.</div>
+      <a href="developers.html#build-plugin" class="btn btn-dark">Build a Plugin
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
     <div class="arch-visual reveal d1">
       <div class="arch-panel">
         <svg class="logo-mark"><use href="#magna-mark"/></svg>
         <div class="arch-layers">
-          <div class="arch-layer">Your custom plugins <span class="tag">Yours</span></div>
-          <div class="arch-layer">Extensions &amp; modules <span class="tag">Opt-in</span></div>
-          <div class="arch-layer core">Magna core: content, pages, media <span class="tag">Focused</span></div>
-          <div class="arch-layer">Contemporary framework foundation <span class="tag">Open</span></div>
+          <div class="arch-layer">Your plugins and packages <span class="tag">Yours</span></div>
+          <div class="arch-layer">Official plugins <span class="tag">Opt-in</span></div>
+          <div class="arch-layer core">Magna core: content, media, delivery API <span class="tag">Core</span></div>
+          <div class="arch-layer">Laravel 13 · Filament 5 · PHP 8.3 <span class="tag">Foundation</span></div>
         </div>
       </div>
       <div class="arch-float"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Open Source</div>
@@ -811,25 +731,25 @@
 <section class="headless" id="headless">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Headless First</div>
-      <h2>Headless at the core. <em>Frontend when you want it.</em></h2>
-      <p>Magna is headless-first: your content lives behind a clean API, ready to power any frontend: a JavaScript framework, a mobile app, several channels at once. And when you just want a website, you don't have to build one.</p>
+      <div class="badge">API First</div>
+      <h2>Your content, behind <em>a clean API</em></h2>
+      <p>Every entry is available over a versioned REST API with scoped, expiring keys. Build the frontend in whatever your team ships in, or let the Pages plugin render the website for you.</p>
     </div>
     <div class="headless-grid">
       <div class="terminal reveal">
-        <div class="term-bar"><i></i><i></i><i></i><span>magna · content API</span></div>
+        <div class="term-bar"><i></i><i></i><i></i><span>magna · delivery API</span></div>
         <div class="term-body">
-<span class="cm"># Your content, served as data</span><br>
-<span class="kw">GET</span> /api/v1/content/article<br><br>
+<span class="cm"># A scoped, read-only key per client</span><br>
+<span class="kw">GET</span> /api/v1/content/article?filter[status]=published&amp;locale=en<br><br>
 <span class="pn">{</span><br>
 &nbsp;&nbsp;<span class="ky">"data"</span><span class="pn">: [{</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="ky">"type"</span><span class="pn">:</span> <span class="st">"article"</span><span class="pn">,</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="ky">"title"</span><span class="pn">:</span> <span class="st">"Designed for the second act"</span><span class="pn">,</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="ky">"slug"</span><span class="pn">:</span> <span class="st">"designed-for-the-second-act"</span><span class="pn">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ky">"title"</span><span class="pn">:</span> <span class="st">"Launch notes"</span><span class="pn">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="ky">"slug"</span><span class="pn">:</span> <span class="st">"launch-notes"</span><span class="pn">,</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="ky">"status"</span><span class="pn">:</span> <span class="st">"published"</span><br>
 &nbsp;&nbsp;<span class="pn">}]</span><br>
 <span class="pn">}</span><br><br>
-<span class="cm"># Same content, everywhere you publish</span>
+<span class="cm"># Filter, sort, select fields, query by locale</span>
         </div>
       </div>
       <div class="reveal d1">
@@ -837,20 +757,20 @@
           <div class="path-card">
             <div class="path-icon"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
             <div>
-              <h4>Go headless<span class="path-tag">API-first</span></h4>
-              <p>Consume your content over the API from any stack: Next, Nuxt, native apps, whatever your team ships in. One source of content, every channel.</p>
+              <h4>Bring your own frontend<span class="path-tag">API</span></h4>
+              <p>Consume content from Next, Nuxt, a mobile app or several channels at once. Delivery keys are scoped per client and expire on a schedule.</p>
             </div>
           </div>
           <div class="path-card">
             <div class="path-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
             <div>
-              <h4>Launch the frontend<span class="path-tag">One click</span></h4>
-              <p>Don't need a custom frontend? Switch on Magna's ready-made website frontend with one click, page builder and themes included, and you're live.</p>
+              <h4>Let Magna render the site<span class="path-tag">Alpha</span></h4>
+              <p>The Pages plugin adds routing, themes and a visual builder on top of the same content. It is in alpha and under active development.</p>
             </div>
           </div>
         </div>
-        <p style="color:var(--text-muted); font-size:15px; margin-bottom:26px;">Most platforms make you choose between headless flexibility and a working website. Magna gives you both, and lets you change your mind later without re-platforming.</p>
-        <a href="#get-started" class="btn btn-dark">Explore the API Approach
+        <p style="color:var(--text-muted); font-size:15px; margin-bottom:26px;">Both paths read the same content from the same database, so choosing one today does not rule out the other later.</p>
+        <a href="developers.html#api" class="btn btn-dark">Explore the API
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </div>
@@ -861,23 +781,23 @@
 <section class="cases" id="use-cases">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge light">Beyond Websites</div>
-      <h2>Start with a CMS. <em>Build whatever comes next.</em></h2>
-      <p>Most projects outgrow their first brief. The company site needs a careers portal. The content hub needs memberships. The directory needs payments. On many platforms, that's the moment you start fighting your own foundation. Magna is built for the second act.</p>
+      <div class="badge light">Use Cases</div>
+      <h2>What people <em>build with it</em></h2>
+      <p>Structured content, a delivery API and a Laravel codebase cover a lot of ground. These are the patterns Magna fits well.</p>
     </div>
     <div class="case-grid">
-      <div class="case-chip reveal"><h4>Company websites</h4><p>The baseline case, done properly.</p></div>
-      <div class="case-chip reveal d1"><h4>Content platforms</h4><p>Publications and knowledge bases at scale.</p></div>
-      <div class="case-chip reveal d2"><h4>Customer portals</h4><p>Authenticated, personalised experiences.</p></div>
-      <div class="case-chip reveal d3"><h4>Membership platforms</h4><p>Communities and gated content.</p></div>
-      <div class="case-chip reveal"><h4>Directories</h4><p>Structured, searchable listings.</p></div>
-      <div class="case-chip reveal d1"><h4>Marketplaces</h4><p>Multi-party platforms, grown from directories.</p></div>
-      <div class="case-chip reveal d2"><h4>Internal systems</h4><p>Intranets and team tools, one stack.</p></div>
-      <div class="case-chip reveal d3"><h4>Custom applications</h4><p>Whatever fits no template at all.</p></div>
+      <div class="case-chip reveal"><h4>Company websites</h4><p>Pages, media and menus, managed by editors.</p></div>
+      <div class="case-chip reveal d1"><h4>Content platforms</h4><p>Typed content models for publications and docs.</p></div>
+      <div class="case-chip reveal d2"><h4>Headless backends</h4><p>Content for apps and frontends over the API.</p></div>
+      <div class="case-chip reveal d3"><h4>Multilingual sites</h4><p>Per-field localisation and locale-prefixed URLs.</p></div>
+      <div class="case-chip reveal"><h4>Directories</h4><p>Structured, filterable listings from content types.</p></div>
+      <div class="case-chip reveal d1"><h4>Customer portals</h4><p>Built as plugins on the same Laravel stack.</p></div>
+      <div class="case-chip reveal d2"><h4>Internal tools</h4><p>Intranets and team sites on your own servers.</p></div>
+      <div class="case-chip reveal d3"><h4>Custom applications</h4><p>A content backbone inside a larger Laravel app.</p></div>
     </div>
     <div class="cases-foot reveal">
-      <p>One foundation. No forced ceiling.</p>
-      <a href="#get-started" class="btn btn-ghost">Explore Use Cases</a>
+      <p>Start with one, grow into another on the same install.</p>
+      <a href="use-cases.html" class="btn btn-ghost">See Use Cases</a>
     </div>
   </div>
 </section>
@@ -886,17 +806,17 @@
 <section class="plugins" id="plugins">
   <div class="container">
     <div class="section-head center reveal">
-      <div class="badge">Plugin Ecosystem</div>
-      <h2>Keep the core focused. <em>Add what you need.</em></h2>
-      <p>Magna's core does content management exceptionally well, and deliberately stops there. Everything else arrives as a plugin or module: installed when you need it, absent when you don't.</p>
+      <div class="badge">Plugins</div>
+      <h2>Extend it like <em>a Laravel app</em></h2>
+      <p>The core stays small on purpose. Anything else is a plugin, and writing one looks exactly like the Laravel work you already do.</p>
     </div>
     <div class="plugin-grid">
       <div class="plugin-line reveal"></div>
-      <div class="plugin-step reveal"><div class="plugin-num">1</div><h4>Install</h4><p>Add exactly what your project needs from a growing catalogue: commerce, SEO, forms, membership and more as the ecosystem develops.</p></div>
-      <div class="plugin-step reveal d1"><div class="plugin-num">2</div><h4>Build</h4><p>When the catalogue doesn't cover you, build your own, with first-class extension points rather than fragile workarounds.</p></div>
-      <div class="plugin-step reveal d2"><div class="plugin-num">3</div><h4>Trust</h4><p>Extensions can't quietly destabilise a core they don't touch. Upgrades stay predictable; customisations stay yours.</p></div>
+      <div class="plugin-step reveal"><div class="plugin-num">1</div><h4>Scaffold</h4><p>Run php artisan magna:plugin:make. You get a Composer package in plugins-dev/ with a magna.json manifest, ready to code.</p></div>
+      <div class="plugin-step reveal d1"><div class="plugin-num">2</div><h4>Build</h4><p>It is ordinary Laravel inside: migrations, routes, jobs, any Composer dependency. SDK contracts register blocks, admin resources, settings pages and widgets.</p></div>
+      <div class="plugin-step reveal d2"><div class="plugin-num">3</div><h4>Ship</h4><p>Validate it, enable it, and its migrations run on enable. A plugin that fails to boot is disabled automatically instead of taking the site down.</p></div>
     </div>
-    <p class="plugins-note reveal">The architecture is built for an ecosystem spanning commerce, SEO, forms, membership, CRM integrations, directories and industry-specific modules. Some are available today, others are in development, and there is an open path for anything you build yourself.</p>
+    <p class="plugins-note reveal">Plugins declare the permissions they use, and core services are guarded against tampering. The official catalogue is still young; building your own is a supported, documented path rather than a workaround.</p>
   </div>
 </section>
 
@@ -915,17 +835,18 @@
       </div>
     </div>
     <div class="reveal d1">
-      <div class="badge">Page Builder</div>
+      <div class="badge">Page Builder · Alpha</div>
       <div class="section-head" style="margin-bottom:0">
-        <h2>Design pages visually. <em>Keep the structure honest.</em></h2>
+        <h2>Build pages <em>out of blocks</em></h2>
       </div>
+      <p style="margin-top:18px; color:var(--text-muted); font-size:15.5px;">The Pages plugin adds a visual builder on top of Magna's content: sections, columns and typed blocks, stored as structured data your code can read back. It is in alpha and moving quickly.</p>
       <ul class="builder-points" style="margin-top:26px">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Compose real pages from flexible layouts and reusable components</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sections, headers, footers and templates stay consistent site-wide</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Responsive by default, reusable by design</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Never a black box your developers can't reason about</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Sections, columns and blocks, edited visually</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Reusable headers, footers and patterns shared site-wide</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Per-breakpoint styles and visibility without custom CSS</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Pages stored as data, not opaque markup</li>
       </ul>
-      <a href="#get-started" class="btn btn-primary">Meet the Page Builder
+      <a href="page-builder.html" class="btn btn-primary">See the Page Builder
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </div>
@@ -935,28 +856,28 @@
 <section class="audiences" id="audiences">
   <div class="container">
     <div class="section-head center reveal">
-      <div class="badge">Two Audiences</div>
-      <h2>One platform. <em>Two happy audiences.</em></h2>
+      <div class="badge">Who It's For</div>
+      <h2>For developers <em>and editors</em></h2>
     </div>
     <div class="aud-grid">
       <div class="aud-card reveal">
         <div class="kicker">For Developers</div>
-        <h3>Build on it, not around it</h3>
-        <p>Extend the platform through a real plugin architecture. Integrate over APIs. Work in the tools and workflows you already use.</p>
+        <h3>Work in your own stack</h3>
+        <p>There is no bespoke templating language to learn and no product to work around. A Magna site is a Laravel application you happen to manage content in.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Custom functionality without patching core code</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Version-control-friendly development</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Upgrades that don't break your work</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Plugins without touching core code</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Version control and CI like any Laravel project</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>A delivery API for anything beyond the website</li>
         </ul>
       </div>
       <div class="aud-card reveal d1">
-        <div class="kicker">For Content Teams</div>
-        <h3>Publish without a ticket queue</h3>
-        <p>Create and ship content independently, from one clear interface designed for daily use.</p>
+        <div class="kicker">For Editors</div>
+        <h3>Publish without filing a ticket</h3>
+        <p>The admin is built for daily use: entries, media and pages in one place, with roles that match how your team works.</p>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Reuse sections instead of rebuilding them</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Manage media, pages and publishing in one place</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Simpler workflows for the whole team</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>A visual page builder, currently in alpha</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>Reusable sections instead of rebuilt ones</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>A media library with folders and image presets</li>
         </ul>
       </div>
     </div>
@@ -974,27 +895,27 @@
       <div class="faq-item reveal">
         <div class="faq-q">What is Magna CMS?
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></div>
-        <div class="faq-a"><p>Magna CMS is an open-source, extensible content management system built on a contemporary framework. It pairs visual tools for content teams with a plugin architecture designed for developers. It's a foundation for websites and the applications they grow into.</p></div>
+        <div class="faq-a"><p>An open-source CMS built on Laravel 13 with a Filament 5 admin. The core manages structured content, media and users, and serves everything over a REST API. The Pages plugin adds website rendering, themes and a visual builder on top.</p></div>
       </div>
       <div class="faq-item reveal">
-        <div class="faq-q">Is Magna headless?
+        <div class="faq-q">Do I need to know Laravel to use it?
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></div>
-        <div class="faq-a"><p>Magna is headless-first: content is served over an API, so any frontend can consume it: a JavaScript framework, a mobile app, multiple channels at once. But headless is a choice, not a constraint: switch on the ready-made website frontend with one click when you just want a site, and move between the two approaches without re-platforming.</p></div>
+        <div class="faq-a"><p>Editors don't; the admin is a normal web interface, and the installer runs in the browser. Developers who know Laravel will feel at home straight away, and that familiarity is most of the point: plugins, deployment and debugging work the way Laravel already works.</p></div>
       </div>
       <div class="faq-item reveal">
-        <div class="faq-q">Is Magna trying to replace WordPress?
+        <div class="faq-q">Can I reuse existing Laravel packages?
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></div>
-        <div class="faq-a"><p>No. WordPress shaped the web and remains a strong choice for many projects. Magna takes a different approach: it was designed in this decade, around today's architecture, security expectations and workflows. The right platform depends on the project.</p></div>
+        <div class="faq-a"><p>Yes. Plugins are Composer packages, so they can depend on anything on Packagist. On the admin side, Magna's panel is built with Filament, and plugins extend it with resources, settings pages and dashboard widgets through the SDK's contracts.</p></div>
       </div>
       <div class="faq-item reveal">
-        <div class="faq-q">Who is Magna for?
+        <div class="faq-q">What state is the project in?
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></div>
-        <div class="faq-a"><p>Developers who want a CMS that behaves like the software they already build, agencies standardising on a reusable stack, businesses whose projects may outgrow "website", and content teams who want to publish without a developer on call.</p></div>
+        <div class="faq-a"><p>The core is released and versioned, with signed one-click updates. The Pages plugin, which covers the website frontend and the visual builder, is in alpha. The GitHub repository is the most accurate picture of where things stand.</p></div>
       </div>
       <div class="faq-item reveal">
-        <div class="faq-q">Can I build my own plugins?
+        <div class="faq-q">What does it cost?
           <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span></div>
-        <div class="faq-a"><p>Yes. That's the point of the architecture. Plugins are the supported way to add functionality, with first-class extension points. Custom development is a normal path, not a workaround, and your code stays upgrade-safe and version-controlled.</p></div>
+        <div class="faq-a"><p>The core is MIT-licensed and free to self-host. It runs on ordinary PHP hosting with MySQL, PostgreSQL or SQLite, and your content stays in your own database.</p></div>
       </div>
     </div>
   </div>
@@ -1006,14 +927,14 @@
   <div class="cta-blob b2"></div>
   <div class="container cta-inner reveal">
     <div class="badge light">Get Started</div>
-    <h2>Build your next project on a <em>foundation from this decade</em></h2>
-    <p>Whether it starts as a website or a platform, Magna gives you a core worth building on: open, extensible and designed for the web you're building now.</p>
+    <h2>Clone it and <em>look around</em></h2>
+    <p>The quickest way to judge Magna is to read the code and run the installer. If it is not right for your project, the compare page is open about who it suits and who it doesn't.</p>
     <div class="cta-btns">
-      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-ghost">View Documentation</a>
+      <a href="developers.html" class="btn btn-ghost">Developer Guide</a>
     </div>
-    <a href="#" class="cta-tertiary">Compare Magna CMS →</a>
+    <a href="compare.html" class="cta-tertiary">Compare Magna CMS →</a>
   </div>
 </section>
 
@@ -1022,15 +943,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">
+        <a href="home.html" class="logo">
           <svg class="logo-mark"><use href="#magna-mark"/></svg>
           magna<span class="cms">CMS</span>
         </a>
         <p>An extensible, developer-grade CMS for the web as it is today. Open source, and built to be built on.</p>
         <div class="footer-socials">
           <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0.3a12 12 0 0 0-3.8 23.4c0.6 0.1 0.8-0.3 0.8-0.6v-2c-3.3 0.7-4-1.6-4-1.6-0.5-1.4-1.3-1.8-1.3-1.8-1.1-0.7 0.1-0.7 0.1-0.7 1.2 0.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 0.1-0.8 0.4-1.3 0.8-1.6-2.7-0.3-5.5-1.3-5.5-5.9 0-1.3 0.5-2.4 1.2-3.2-0.1-0.3-0.5-1.5 0.1-3.2 0 0 1-0.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2 0.6 1.7 0.2 2.9 0.1 3.2 0.8 0.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9 0.4 0.4 0.8 1.1 0.8 2.2v3.3c0 0.3 0.2 0.7 0.8 0.6A12 12 0 0 0 12 0.3z"/></svg></a>
-          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H2l8-9.2L1.5 2h7l4.8 6.3zM17.7 20h1.7L7.4 3.9H5.6z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4zM8 8h3.8v2.2h.05c.53-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-7.1c0-1.7 0-3.9-2.4-3.9s-2.75 1.85-2.75 3.77V24H8z"/></svg></a>
         </div>
       </div>
       <div class="footer-col"><h4>Product</h4><ul>
@@ -1047,7 +966,6 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Magna CMS. Open source, released under the MIT licence.</span>
-      <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
     </div>
   </div>
 </footer>
@@ -1057,21 +975,9 @@
 </button>
 
 <script>
-  /* ===== PRELOADER (once per session) ===== */
-  const pre = document.getElementById('preloader');
+  /* ===== HERO ENTRANCE ===== */
   const heroEl = document.querySelector('.hero');
-  const finishSplash = () => {
-    pre.classList.add('done');
-    heroEl && heroEl.classList.add('loaded');
-    try { sessionStorage.setItem('magnaSplash', '1'); } catch (e) {}
-  };
-  if (document.documentElement.classList.contains('no-splash')) {
-    heroEl && heroEl.classList.add('loaded');
-  } else {
-    window.addEventListener('load', () => setTimeout(finishSplash, 1100));
-    /* Safety fallback: never leave the preloader stuck */
-    setTimeout(finishSplash, 4000);
-  }
+  heroEl && heroEl.classList.add('loaded');
 
   /* ===== HEADER SCROLL + PROGRESS ===== */
   const header = document.getElementById('header');
@@ -1096,17 +1002,6 @@
   mmClose.addEventListener('click', closeMenu);
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-
-  /* ===== CURSOR GLOW ===== */
-  const glow = document.getElementById('cursorGlow');
-  if (window.matchMedia('(pointer:fine)').matches) {
-    window.addEventListener('mousemove', e => {
-      glow.style.opacity = '1';
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
-    document.addEventListener('mouseleave', () => glow.style.opacity = '0');
-  }
 
   /* ===== REVEAL ON SCROLL ===== */
   const io = new IntersectionObserver((entries) => {

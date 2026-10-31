@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Magna Pages — Build Visually, Stay in Control</title>
-<meta name="description" content="Magna's page builder in development: block editor, themes, reusable sections, global headers and footers, live preview — on a headless core.">
-<link rel="icon" type="image/svg+xml" href="/magna-logo.svg">
+<title>Magna Pages — The Visual Page Builder, in Alpha</title>
+<meta name="description" content="Magna Pages is the alpha page builder for Magna CMS: sections, columns and typed blocks on a visual canvas, reusable template parts, themes with editable design tokens, and pages stored as structured data.">
+<link rel="icon" type="image/svg+xml" href="magna-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,31 +67,6 @@
     background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
     z-index: 2000; transition: width 0.1s linear;
   }
-
-  /* ===== CUSTOM CURSOR ===== */
-  .cursor-glow {
-    position: fixed; top: 0; left: 0; width: 380px; height: 380px;
-    border-radius: 50%; pointer-events: none; z-index: 1;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-    transform: translate(-50%,-50%); opacity: 0; transition: opacity 0.4s ease;
-    mix-blend-mode: multiply;
-  }
-
-  /* ===== PRELOADER ===== */
-  .preloader {
-    position: fixed; inset: 0; z-index: 5000; background: var(--bg-dark);
-    display: flex; align-items: center; justify-content: center; flex-direction: column;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  .preloader.done { opacity: 0; visibility: hidden; }
-  .preloader.skip, html.no-splash .preloader { display: none; }
-  .pre-logo { display: flex; align-items: center; gap: 14px; opacity: 0; animation: preIn 0.8s var(--ease) forwards; }
-  .pre-logo .logo-mark { width: 52px; height: 52px; }
-  .pre-logo span { font-family: var(--serif); font-size: 42px; font-weight: 700; color: #fff; letter-spacing: -0.04em; }
-  .pre-bar { width: 180px; height: 2px; background: var(--border-dark); margin-top: 24px; overflow: hidden; border-radius: 2px; }
-  .pre-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg,var(--accent-3),var(--accent),var(--accent-2)); animation: preLoad 1.3s ease forwards; }
-  @keyframes preIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(14px); } }
-  @keyframes preLoad { to { width: 100%; } }
 
   /* ===== BUTTONS ===== */
   .btn {
@@ -247,11 +222,6 @@
   .hero-card ul { list-style: none; display: grid; gap: 12px; text-align: left; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 24px; }
   .hero-card ul li { font-size: 14px; color: #d6daec; font-weight: 500; display: flex; align-items: center; gap: 10px; }
   .hero-card ul li svg { width: 16px; height: 16px; color: var(--accent-3); flex-shrink: 0; }
-
-  .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: #8b91ad; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; }
-  .scroll-hint .mouse { width: 24px; height: 38px; border: 2px solid rgba(255,255,255,0.3); border-radius: 14px; position: relative; }
-  .scroll-hint .mouse::before { content:""; position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: var(--accent-3); border-radius: 2px; animation: scrollWheel 1.6s infinite; }
-  @keyframes scrollWheel { 0%{ opacity:1; top: 7px;} 70%{ opacity:0; top: 18px;} 100%{opacity:0;} }
 
   /* ===== MARQUEE ===== */
   .trust { background: var(--bg-dark); padding: 0 0 60px; overflow: hidden; }
@@ -516,9 +486,8 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .marquee-track, .cta-blob, .arch-float, .badge::before, .scroll-hint .mouse::before, .running-line { animation: none !important; }
+    .marquee-track, .cta-blob, .arch-float, .badge::before, .running-line { animation: none !important; }
     .reveal, .hero-content .anim, .hero-card { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
-    .cursor-glow { display: none; }
   }
 
   /* ===== SUBPAGE EXTRAS ===== */
@@ -563,7 +532,6 @@
     .plugin-line { display: none; }
     .footer-grid { grid-template-columns: 1fr 1fr; }
     .arch-float { display: none; }
-    .scroll-hint { display: none; }
     .hero { padding-bottom: 70px; }
   }
   @media(max-width: 680px) {
@@ -573,7 +541,6 @@
     .hamburger { display: flex; }
     .why-grid, .case-grid, .aud-grid, .footer-grid, .grid-2 { grid-template-columns: 1fr; }
     .hero-card { padding: 28px; }
-    .cursor-glow { display: none; }
   }
 </style>
 </head>
@@ -607,23 +574,12 @@
   </style>
 </svg>
 
-<!-- PRELOADER -->
-<script>(function(){try{if(sessionStorage.getItem('magnaSplash')==='1')document.documentElement.classList.add('no-splash');}catch(e){}})();</script>
-<div class="preloader" id="preloader">
-  <div class="pre-logo">
-    <svg class="logo-mark"><use href="#magna-mark"/></svg>
-    <span>magna</span>
-  </div>
-  <div class="pre-bar"><i></i></div>
-</div>
-
 <div class="scroll-progress" id="scrollProgress"></div>
-<div class="cursor-glow" id="cursorGlow"></div>
 
 <!-- HEADER -->
 <header id="header">
   <div class="container nav-wrap">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -639,7 +595,7 @@
       </ul>
     </nav>
     <div class="nav-right">
-      <a href="#get-started" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -650,7 +606,7 @@
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <div class="mm-top">
-    <a href="index.html" class="logo">
+    <a href="home.html" class="logo">
       <svg class="logo-mark"><use href="#magna-mark"/></svg>
       magna<span class="cms">CMS</span>
     </a>
@@ -659,7 +615,7 @@
     </button>
   </div>
   <nav class="mm-links">
-    <a href="index.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a href="home.html"><span class="mm-idx">01</span>Home<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="why-magna.html"><span class="mm-idx">02</span>Why Magna<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="features.html"><span class="mm-idx">03</span>Features<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     <a href="page-builder.html"><span class="mm-idx">04</span>Page Builder<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -670,9 +626,9 @@
     <a href="#" data-doc-link><span class="mm-idx">09</span>Documentation<svg class="mm-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
   </nav>
   <div class="mm-foot">
-    <a href="#get-started" class="btn btn-primary">Get Started
+    <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    <div class="mm-note">Open source · Built to be built on</div>
+    <div class="mm-note">Open source · MIT licence</div>
   </div>
 </div>
 
@@ -682,11 +638,11 @@
   <div class="hero-mesh"></div>
   <div class="container" style="position:relative;z-index:2">
     <div class="hero-content hero-single">
-      <div class="badge light anim">Magna Pages · Alpha 1.0.0</div>
-      <h1 class="anim">Build visually. <em>Stay in control.</em></h1>
-      <p class="anim">Magna Pages, the Magna CMS page builder now in alpha, lets content teams design and publish real pages with a block editor, themes and live preview, without producing markup your developers will regret. It's the one-click switch that turns the headless core into a full website.</p>
+      <div class="badge light anim">Magna Pages · Alpha</div>
+      <h1 class="anim">Build pages visually. <em>Keep them as data.</em></h1>
+      <p class="anim">Magna Pages is the plugin that turns Magna's content into a website: routing, themes and a visual builder where editors compose pages from sections, columns and typed blocks. Every page is stored as structured data, so your code can read back what editors build.</p>
       <div class="hero-btns anim">
-        <a href="#get-started" class="btn btn-primary">Follow Progress
+        <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">Follow on GitHub
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a href="features.html" class="btn btn-ghost">Explore Features</a>
       </div>
@@ -709,10 +665,11 @@
       </div>
     </div>
     <div class="reveal d1">
-      <div class="badge">Design Without Limits</div>
+      <div class="badge">How It Works</div>
       <div class="section-head" style="margin-bottom:0">
-        <h2>Freedom <em>inside a system</em></h2>
-        <p>Page builders usually force a choice: creative freedom that turns into chaos, or rigid templates that turn into sameness. Magna Pages is designed around a third option: block-based layout control operating inside a component system. The freedom is real. So is the coherence.</p>
+        <h2>Sections, columns <em>and blocks</em></h2>
+        <p>A page is a list of sections. Each section holds columns, and each column holds blocks: headings, text, images, tables, galleries and more. Editors arrange them on a visual canvas, and the result stays structured instead of collapsing into one blob of markup.</p>
+        <p>Because the structure is data, themes can restyle a whole site without touching its content, and the delivery API can serve the same pages to other channels.</p>
       </div>
     </div>
   </div>
@@ -723,38 +680,39 @@
   <div class="container">
     <div class="section-head reveal">
       <div class="badge">The System</div>
-      <h2>Build once. <em>Use everywhere.</em></h2>
+      <h2>What the builder <em>does today</em></h2>
+      <p>Everything below ships in the current alpha of the Pages plugin.</p>
     </div>
     <div class="why-grid">
       <div class="why-card reveal">
         <div class="why-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="1"/><rect x="3" y="14" width="8" height="7" rx="1"/><rect x="15" y="14" width="6" height="7" rx="1"/></svg></div>
-        <h3>Reusable sections</h3>
-        <p>A call-to-action, a pricing band, a testimonial row: design it once, drop it into any page, update it in one place and the change follows. That's a design system, not just pages.</p>
+        <h3>Template parts and patterns</h3>
+        <p>Headers and footers are template parts, chosen per page or set as the site default. Patterns are saved sections and blocks you can insert anywhere and keep reusing.</p>
       </div>
       <div class="why-card reveal d1">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
-        <h3>Global headers &amp; footers</h3>
-        <p>Headers and footers aren't page content. They're site infrastructure. Designed visually, managed centrally, applied everywhere. Change the navigation once; every page follows.</p>
-      </div>
-      <div class="why-card reveal d2">
         <div class="why-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="13" height="16" rx="2"/><rect x="17" y="8" width="5" height="12" rx="1.5"/></svg></div>
-        <h3>Responsive by design</h3>
-        <p>Layouts adapt across desktop, tablet and mobile, with control over how designs behave at each size, so responsive means designed rather than merely squashed.</p>
-      </div>
-      <div class="why-card reveal">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-        <h3>Block editor</h3>
-        <p>Structured blocks that respect your time and your markup. Content stays clean data, never a tangle of inline styling.</p>
-      </div>
-      <div class="why-card reveal d1">
-        <div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg></div>
-        <h3>Live preview</h3>
-        <p>See what you ship while you build it. No publish-and-pray.</p>
+        <h3>Per-breakpoint control</h3>
+        <p>Style values and visibility can differ for desktop, tablet and mobile, set from the inspector. There is no custom CSS to write for the common cases.</p>
       </div>
       <div class="why-card reveal d2">
         <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5"/></svg></div>
-        <h3>Themes</h3>
-        <p>Start from a theme and customise from there, with a theme development guide for building your own.</p>
+        <h3>Themes and design tokens</h3>
+        <p>A theme ships its layout, block styles and a set of design tokens: colours, type and spacing that site owners edit in the admin without touching the theme's files.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg></div>
+        <h3>Display conditions</h3>
+        <p>Sections can show or hide by schedule, sign-in state or plugin-defined rules, and popups can target paths with frequency, delay and scroll triggers.</p>
+      </div>
+      <div class="why-card reveal d1">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <h3>Experiments</h3>
+        <p>Two variants of a section can run as an A/B test, with a conversion goal counted when visitors act on the variant they saw.</p>
+      </div>
+      <div class="why-card reveal d2">
+        <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div>
+        <h3>Structured output</h3>
+        <p>Pages are stored as sections, columns and typed blocks with stable ids. Site content can be exported, diffed and synced as a kit from the command line.</p>
       </div>
     </div>
   </div>
@@ -764,19 +722,20 @@
 <section class="problem">
   <div class="container">
     <div class="section-head reveal">
-      <div class="badge">Two Disciplines</div>
-      <h2>Visual building that <em>doesn't cost you the codebase</em></h2>
+      <div class="badge">Alpha Status</div>
+      <h2>Where the builder <em>stands</em></h2>
+      <p>Magna Pages is in alpha. It is developing quickly, some edges are rough, and details may change between releases. Content editing in the core does not depend on it: entries, media and the delivery API work with or without the builder installed.</p>
     </div>
     <div class="aud-grid">
       <div class="aud-card reveal">
-        <div class="kicker">For Designers</div>
-        <h3>The design language survives</h3>
-        <p>A component system that protects visual consistency while giving editors real layout freedom. Dozens of editors, hundreds of pages, one coherent site.</p>
+        <div class="kicker">For Editors</div>
+        <h3>Usable now, improving fast</h3>
+        <p>The canvas, blocks, template parts and themes described above all work in the current alpha. Expect new blocks and polish release by release rather than a finished product on day one.</p>
       </div>
       <div class="aud-card reveal d1">
         <div class="kicker">For Developers</div>
-        <h3>Part of the platform, not a layer fighting it</h3>
-        <p>Builder output belongs to the same well-structured platform as everything else, extendable with custom blocks and themes when the standard set isn't enough. Content stays structured data behind the API.</p>
+        <h3>A stable shape to build against</h3>
+        <p>Pages are data with stable ids, themes are audited Blade views over documented markup, and custom blocks come from plugins. If you build a theme now, the site-kit tooling carries your content through updates.</p>
       </div>
     </div>
   </div>
@@ -787,10 +746,10 @@
   <div class="cta-blob b1"></div>
   <div class="cta-blob b2"></div>
   <div class="container cta-inner reveal">
-    <h2>Give your content team <em>the keys</em></h2>
-    <p>Magna Pages is in alpha. Start with the headless core today. The builder switches on when you're ready.</p>
+    <h2>Try the builder <em>alongside the core</em></h2>
+    <p>Install Magna, enable the Pages plugin and build a page. The core is stable today; the builder is in alpha and improving with every release.</p>
     <div class="cta-btns">
-      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">Get Started
+      <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" class="btn btn-primary">View on GitHub
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       <a href="features.html" class="btn btn-ghost">Explore Features</a>
     </div>
@@ -803,15 +762,13 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="logo">
+        <a href="home.html" class="logo">
           <svg class="logo-mark"><use href="#magna-mark"/></svg>
           magna<span class="cms">CMS</span>
         </a>
         <p>An extensible, developer-grade CMS for the web as it is today. Open source, and built to be built on.</p>
         <div class="footer-socials">
           <a href="https://github.com/Magna-CMS/Magna/" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0.3a12 12 0 0 0-3.8 23.4c0.6 0.1 0.8-0.3 0.8-0.6v-2c-3.3 0.7-4-1.6-4-1.6-0.5-1.4-1.3-1.8-1.3-1.8-1.1-0.7 0.1-0.7 0.1-0.7 1.2 0.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 0.1-0.8 0.4-1.3 0.8-1.6-2.7-0.3-5.5-1.3-5.5-5.9 0-1.3 0.5-2.4 1.2-3.2-0.1-0.3-0.5-1.5 0.1-3.2 0 0 1-0.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2 0.6 1.7 0.2 2.9 0.1 3.2 0.8 0.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9 0.4 0.4 0.8 1.1 0.8 2.2v3.3c0 0.3 0.2 0.7 0.8 0.6A12 12 0 0 0 12 0.3z"/></svg></a>
-          <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.5 8.6L23 22h-6.8l-5.3-6.9L4.8 22H2l8-9.2L1.5 2h7l4.8 6.3zM17.7 20h1.7L7.4 3.9H5.6z"/></svg></a>
-          <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4zM8 8h3.8v2.2h.05c.53-1 1.8-2.2 3.7-2.2 4 0 4.7 2.6 4.7 6V24h-4v-7.1c0-1.7 0-3.9-2.4-3.9s-2.75 1.85-2.75 3.77V24H8z"/></svg></a>
         </div>
       </div>
       <div class="footer-col"><h4>Product</h4><ul>
@@ -828,7 +785,6 @@
     </div>
     <div class="footer-bottom">
       <span>© 2026 Magna CMS. Open source, released under the MIT licence.</span>
-      <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
     </div>
   </div>
 </footer>
@@ -838,21 +794,9 @@
 </button>
 
 <script>
-  /* ===== PRELOADER (once per session) ===== */
-  const pre = document.getElementById('preloader');
+  /* ===== HERO ENTRANCE ===== */
   const heroEl = document.querySelector('.hero');
-  const finishSplash = () => {
-    pre.classList.add('done');
-    heroEl && heroEl.classList.add('loaded');
-    try { sessionStorage.setItem('magnaSplash', '1'); } catch (e) {}
-  };
-  if (document.documentElement.classList.contains('no-splash')) {
-    heroEl && heroEl.classList.add('loaded');
-  } else {
-    window.addEventListener('load', () => setTimeout(finishSplash, 1100));
-    /* Safety fallback: never leave the preloader stuck */
-    setTimeout(finishSplash, 4000);
-  }
+  heroEl && heroEl.classList.add('loaded');
 
   /* ===== HEADER SCROLL + PROGRESS ===== */
   const header = document.getElementById('header');
@@ -878,16 +822,6 @@
   mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
-  /* ===== CURSOR GLOW ===== */
-  const glow = document.getElementById('cursorGlow');
-  if (window.matchMedia('(pointer:fine)').matches) {
-    window.addEventListener('mousemove', e => {
-      glow.style.opacity = '1';
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
-    document.addEventListener('mouseleave', () => glow.style.opacity = '0');
-  }
 
   /* ===== REVEAL ON SCROLL ===== */
   const io = new IntersectionObserver((entries) => {
