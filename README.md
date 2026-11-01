@@ -32,9 +32,12 @@ Rendered by Magna core 1.7.2 with Pages 0.7.0-alpha — no mock-ups:
 |---|---|---|
 | ![The home hero: dark indigo band, wordmark, primary navigation and the stack card](docs/screenshots/home-hero.png) | ![The features page: verified capability rows with status pills](docs/screenshots/features.png) | ![The page-builder page, labelled alpha](docs/screenshots/page-builder.png) |
 
-| Mobile | Drawer | Full page |
-|---|---|---|
-| ![The home page at phone width](docs/screenshots/home-mobile.png) | ![The mobile drawer, filled from the kit's mobile menu](docs/screenshots/drawer-mobile.png) | ![The complete home page](docs/screenshots/home-full.png) |
+| Mobile | Drawer |
+|---|---|
+| ![The home page at phone width](docs/screenshots/home-mobile.png) | ![The mobile drawer, filled from the kit's mobile menu](docs/screenshots/drawer-mobile.png) |
+
+A full-page capture of the home page is in
+[docs/screenshots/home-full.png](docs/screenshots/home-full.png).
 
 ## Requirements
 
@@ -112,15 +115,20 @@ content changes three-way (entries you edited are kept and reported).
 
 The kit is the source of truth; there is no separate authoring format. To
 change the site, edit it in the page builder, then export the result back
-into the repo when it should ship with the theme:
+into this repo when it should ship with the theme:
 
 ```bash
+# inside the Magna install
 php artisan magna:site:export themes/kizmath/website/starter/magna-website.json
+
+# then, from this repository's root (after copying the exported file in)
 python starter/build/kitcheck.py     # proves the kit against the renderer's rules
 ```
 
-The kit's node ids are deterministic, so an exported kit upserts cleanly on
-the next `magna:site:sync` instead of duplicating content.
+The kit's node ids are stable, so an exported kit upserts cleanly on the
+next `magna:site:sync` instead of duplicating content. Nodes added in the
+builder carry the builder's own ids; kitcheck notes them but only duplicate
+ids are an error.
 
 ## Content rules
 

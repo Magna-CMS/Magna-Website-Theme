@@ -230,9 +230,12 @@
         .magna-faq__question::-webkit-details-marker { display: none; }
         .magna-faq__question::after {
             content: ""; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
-            background-color: var(--accent-light); transition: transform 0.3s var(--ease), background-color 0.3s var(--ease);
-            -webkit-mask: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: center; background-size: 18px;
+            transition: transform 0.3s var(--ease);
+            /* The plus is drawn with gradients so it follows the accent token. */
+            background:
+                linear-gradient(var(--accent), var(--accent)) center / 16px 2.5px no-repeat,
+                linear-gradient(var(--accent), var(--accent)) center / 2.5px 16px no-repeat,
+                var(--accent-light);
         }
         .magna-faq__item[open] .magna-faq__question::after { transform: rotate(45deg); }
         .magna-faq__answer { padding: 0 28px 26px; color: var(--text-muted); font-size: 15px; }
