@@ -14,12 +14,27 @@ views/system/layout.blade.php   the page shell: all CSS and JS, inline
 views/blocks/features.blade.php status pills, tags, sprite icons, bare rows
 views/blocks/logo.blade.php     the hexagon mark and wordmark suffix
 starter/magna-website.json      the site kit: 11 pages, header/footer parts,
-                                5 menus, home and 404 settings
-starter/build/                  the HTML → site-kit converter (dev only)
-source/                         the hand-written pages the kit is built from
+                                5 menus, home and 404 settings — the single
+                                source of truth for the site's content
+starter/build/kitcheck.py       static checks that prove the kit against the
+                                renderer's rules before it is committed
+dist/kizmath-website-1.0.0.zip  the ready-to-upload theme package
+docs/screenshots/               the pages below, rendered by a real install
 docs/strategy/                  the original content-strategy notes (historic;
                                 they predate the claims re-audit)
 ```
+
+## What it looks like
+
+Rendered by Magna core 1.7.2 with Pages 0.7.0-alpha — no mock-ups:
+
+| Home | Features | Page builder |
+|---|---|---|
+| ![The home hero: dark indigo band, wordmark, primary navigation and the stack card](docs/screenshots/home-hero.png) | ![The features page: verified capability rows with status pills](docs/screenshots/features.png) | ![The page-builder page, labelled alpha](docs/screenshots/page-builder.png) |
+
+| Mobile | Drawer | Full page |
+|---|---|---|
+| ![The home page at phone width](docs/screenshots/home-mobile.png) | ![The mobile drawer, filled from the kit's mobile menu](docs/screenshots/drawer-mobile.png) | ![The complete home page](docs/screenshots/home-full.png) |
 
 ## Requirements
 
@@ -33,9 +48,10 @@ plugin is required to render any page.
 
 ## Install
 
-Either upload the theme zip in **Admin → System → Themes → Upload theme**, or
-copy this repository to `themes/kizmath/website/` inside your Magna install
-(the folder must match the manifest name).
+Either upload **[`dist/kizmath-website-1.0.0.zip`](dist/kizmath-website-1.0.0.zip)**
+in **Admin → System → Themes → Upload theme**, or copy `theme.json`,
+`tokens.json`, `views/` and `starter/` to `themes/kizmath/website/` inside your
+Magna install (the folder must match the manifest name).
 
 Then import the content:
 
@@ -92,20 +108,19 @@ deterministic (`kiz-<page>-<kind>-<n>`), so a later `magna:site:sync` updates
 the same nodes rather than duplicating them, and theme updates can carry
 content changes three-way (entries you edited are kept and reported).
 
-## Regenerating the kit from the HTML sources
+## Updating the kit
 
-The pages under `source/` are the authoring format: self-contained HTML you
-can open in a browser. The converter turns them into the kit:
+The kit is the source of truth; there is no separate authoring format. To
+change the site, edit it in the page builder, then export the result back
+into the repo when it should ship with the theme:
 
 ```bash
-cd starter/build
-pip install beautifulsoup4 lxml
-python convert.py --strict      # writes ../magna-website.json
-python kitcheck.py              # proves the kit against the renderer's rules
+php artisan magna:site:export themes/kizmath/website/starter/magna-website.json
+python starter/build/kitcheck.py     # proves the kit against the renderer's rules
 ```
 
-`--strict` fails the run if any source markup went unconverted. The converter
-is deterministic: the same sources produce a byte-identical kit.
+The kit's node ids are deterministic, so an exported kit upserts cleanly on
+the next `magna:site:sync` instead of duplicating content.
 
 ## Content rules
 
