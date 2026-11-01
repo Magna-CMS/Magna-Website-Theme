@@ -370,7 +370,7 @@
         [data-header] .magna-btn { padding: 10px 22px; font-size: 13px; }
         [data-header] .magna-nav__description { display: none; }
 
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; position: absolute; right: 22px; top: 50%; transform: translateY(-50%); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 8px; position: absolute; right: 22px; top: 50%; transform: translateY(-50%); z-index: 5; }
         .hamburger span { width: 24px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.3s var(--ease); }
         [data-header].scrolled .hamburger span { background: var(--text-main); }
         .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
